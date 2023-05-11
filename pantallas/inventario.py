@@ -61,6 +61,17 @@ def open():
             tree.delete(x)
         screen.update()
 
+    def press_add_inv_button():
+        element = ['', 0]
+
+        try:
+            element[0] = get_selected_item_column_value(0)
+            element[1] = get_selected_item_column_value(4)
+            add_inv.open(element)
+            fill_treeview()
+        except:
+            messagebox.showerror(title='Error', message='Se debe seleccionar un producto')
+
     def press_add_button():
         add.open()
         fill_treeview()
@@ -68,28 +79,45 @@ def open():
         screen.grab_set()
 
     def press_del_button():
-        if msgBox()=='yes':
-            values = ['', 'codigo']
-            values[0] = get_selected_item_id()
+        values = ['', 'codigo']
+        try:
+            values[0] = get_selected_item_column_value(0)
 
-            del_events.delete_product(values)
+            if msgBox()=='yes':
+                del_events.delete_product(values)
+                fill_treeview()
+        except:
+            messagebox.showinfo(title='Error', message='Se debe seleccionar un producto')
+    
+    def press_modify_button():
+        try:
+            element = get_row()
+            modify.open(element)
             fill_treeview()
+        except:
+            messagebox.showerror(title='Error', message='Se debe seleccionar un producto')
     
     def msgBox():
         msg = messagebox.askquestion(title='Eliminar producto', message='¿Seguro que deseas eliminar el producto seleccionado?', icon='warning')
         
         return msg
 
-    def get_selected_item_id():
+    def get_selected_item_column_value(column):
         id_selected_item = tree.focus()
-        value = tree.item(id_selected_item)['values'][0]
+        value = tree.item(id_selected_item)['values'][column]
+
+        return value
+
+    def get_row():
+        id_selected_item = tree.focus()
+        value = tree.item(id_selected_item)['values']
 
         return value
 
     def bottom_menu():
-        btn_add_inv = tk.CTkButton(master=frame, text='Agregar existencias', font=('Bold', 20), command=add_inv.open)
+        btn_add_inv = tk.CTkButton(master=frame, text='Agregar existencias', font=('Bold', 20), command=press_add_inv_button)
         btn_add = tk.CTkButton(master=frame, text='Registrar producto', font=('Bold', 20), command=press_add_button)
-        btn_modify = tk.CTkButton(master=frame, text='Modificar producto', font=('Bold', 20), command=modify.open)
+        btn_modify = tk.CTkButton(master=frame, text='Modificar producto', font=('Bold', 20), command=press_modify_button)
         btn_delete = tk.CTkButton(master=frame, text='Eliminar producto', font=('Bold', 20), command=press_del_button)
         btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=test)
 

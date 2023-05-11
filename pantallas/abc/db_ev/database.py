@@ -37,10 +37,13 @@ class Database:
         command = f"UPDATE {table} SET status = false WHERE id = {id};"
         self.exeCmd(command, 'delete')
 
-    # Falta terminar la sentencia
     def updateElement(self, table, obj, opc):
         command = self.selectCmd(opc, table, obj, 'delete')
         self.exeCmd(command, 'update')
+
+    def addStock(self, codigo, qty):
+        command = f"UPDATE productos SET stock = {qty} WHERE codigo = '{codigo}'"
+        self.exeCmd(command, type='update')
 
     def exeCmd(self, command, type):
         cnx, cursor = self.connectDB()
@@ -69,14 +72,14 @@ class Database:
                 command = f"INSERT INTO {table} (nombre, direccion, phone, status) VALUES ('{obj.nombre}', '{obj.direccion}', '{obj.phone}, {obj.state}');"
         else:
             if opc=='Producto':
-                command = f"UPDATE {table} SET codigo = {obj.codigo}, nombre = {obj.nombre}, precio_compra = {obj.precio_compra}, precio_venta = {obj.precio_venta}, stock = {obj.stock} WHERE id = {obj.id};"
+                command = f"UPDATE {table} SET codigo = '{obj.codigo}', nombre = '{obj.nombre}', precio_compra = {obj.precio_compra}, precio_venta = {obj.precio_venta}, stock = {obj.stock} WHERE id = {obj.id};"
             elif opc=='Empleado':
-                command = f"UPDATE {table} SET nombre = {obj.nombre}, ap_p = {obj.ap_p}, ap_m = {obj.ap_m}, phone = {obj.phone}, num_empleado = {obj.num_empleado}, rol = {obj.rol} WHERE id = {obj.id};"
+                command = f"UPDATE {table} SET nombre = '{obj.nombre}', ap_p = '{obj.ap_p}', ap_m = '{obj.ap_m}', phone = '{obj.phone}', num_empleado = '{obj.num_empleado}', rol = '{obj.rol}' WHERE id = {obj.id};"
             elif opc=='Cliente':
-                command = f"UPDATE {table} SET nombre = {obj.nombre}, ap_p = {obj.ap_p}, ap_m = {obj.ap_m}, phone = {obj.phone}, email = {obj.email} WHERE id = {obj.id};"
+                command = f"UPDATE {table} SET nombre = '{obj.nombre}', ap_p = '{obj.ap_p}', ap_m = '{obj.ap_m}', phone = '{obj.phone}', email = '{obj.email}' WHERE id = {obj.id};"
             elif opc=='Proveedor':
-                command = f"UPDATE {table} SET nombre = {obj.nombre}, phone = {obj.phone}, email = {obj.email} WHERE id = {obj.id};"
+                command = f"UPDATE {table} SET nombre = '{obj.nombre}', phone = '{obj.phone}', email = '{obj.email}' WHERE id = {obj.id};"
             elif opc=='Sucursal':
-                command = f"UPDATE {table} SET nombre = {obj.direccion}, phone = {obj.phone} WHERE id = {obj.id};"
+                command = f"UPDATE {table} SET nombre = '{obj.direccion}', phone = '{obj.phone}' WHERE id = {obj.id};"
 
         return command
