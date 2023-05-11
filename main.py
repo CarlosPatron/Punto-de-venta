@@ -1,4 +1,4 @@
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import customtkinter as tk
 from pantallas import login, inventario, empleados, clientes
 from pantallas.abc.codigo_manual import code
@@ -14,8 +14,34 @@ root.state('zoomed')
 def press_user_button():
     login.open()
 
+# ! Es sólo una simulación
+def purchase():
+    if len(tree.get_children())==0:
+        messagebox.showerror(title='Error', message='Se debe agregar algún producto')
+    else:
+        messagebox.showinfo(title='Venta realizada', message='Venta realizada exitosamente')
+        clear_treeView()
+
 def press_code_button():
     code.open(tree)
+
+def press_quit():
+    selected = tree.focus()
+
+    if len(selected)>0:
+        tree.delete(selected)
+    else:
+        messagebox.showerror(title='Error', message='Se debe seleccionar un producto')
+
+def cancel_sale():
+    option = messagebox.askquestion(title='Cancelar venta', message='¿Estás seguro que deseas cancelar la venta?')
+    
+    if option=='yes':
+        clear_treeView()
+
+def clear_treeView():
+    for x in tree.get_children():
+        tree.delete(x)
 
 def create_top_menu():
     global btn_user
@@ -55,7 +81,7 @@ def create_treeview():
     tree.column('cantidad', anchor='center', stretch='no', width=120)
     tree.heading('cantidad', text='Cantidad')
 
-    tree.column('producto', anchor='center')
+    tree.column('producto', anchor='center', width=500)
     tree.heading('producto', text='Producto')
 
     tree.column('precio_unitario', anchor='center', stretch='no', width=200)
@@ -88,10 +114,10 @@ def create_bottom_menu():
     botMenuFrame = tk.CTkFrame(master=root)
     menu_items = ['btn_cobrar', 'btn_cobrar_factura', 'btn_quitar_producto', 'btn_cancelar_venta', 'btn_introducir_codigo']
 
-    btn_cobrar = tk.CTkButton(master=botMenuFrame, text='✓ Cobrar', font=('Bold', 20))
+    btn_cobrar = tk.CTkButton(master=botMenuFrame, text='✓ Cobrar', font=('Bold', 20), command=purchase)
     btn_cobrar_factura = tk.CTkButton(master=botMenuFrame, text='Cobrar con factura', font=('Bold', 20))
-    btn_quitar_producto = tk.CTkButton(master=botMenuFrame, text='Quitar producto', font=('Bold', 20))
-    btn_cancelar_venta = tk.CTkButton(master=botMenuFrame, text='Cancelar venta', font=('Bold', 20))
+    btn_quitar_producto = tk.CTkButton(master=botMenuFrame, text='Quitar producto', font=('Bold', 20), command=press_quit)
+    btn_cancelar_venta = tk.CTkButton(master=botMenuFrame, text='Cancelar venta', font=('Bold', 20), command=cancel_sale)
     btn_introducir_codigo = tk.CTkButton(master=botMenuFrame, text='Código manual', font=('Bold', 20), command=press_code_button)
 
     # Place items
