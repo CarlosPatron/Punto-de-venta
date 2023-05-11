@@ -1,6 +1,7 @@
 import customtkinter as tk
 from tkinter import ttk
 from .abc.empleados import add, modify
+from .abc.db_ev import general_events as ge
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -10,8 +11,21 @@ def open():
     screen.geometry('1280x720')
     screen.title('Empleados')
 
-    def test():
-        print('Hello')
+    def fill_treeView():
+        data = ge.get_all_table('empleados')
+        print(data)
+
+        clear_treeView()
+
+        for x in range(len(data)):
+            tree.insert(parent='', index='end', iid=x, text='', values=(data[x][1], data[x][3], data[x][4], data[x][5], data[x][6], data[x][8]))
+    
+    def clear_treeView():
+        for x in tree.get_children():
+            tree.delete(x)
+
+    def press_add_button():
+        add.open()
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)
@@ -51,7 +65,7 @@ def open():
         style.configure('Treeview.Heading', font=(None, 14))
 
     def bottom_menu():
-        btn_add = tk.CTkButton(master=frame, text='Agregar usuario', font=('Bold', 20), command=add.open)
+        btn_add = tk.CTkButton(master=frame, text='Agregar usuario', font=('Bold', 20), command=press_add_button)
         btn_modify = tk.CTkButton(master=frame, text='Modificar usuario', font=('Bold', 20), command=modify.open)
         btn_delete = tk.CTkButton(master=frame, text='Eliminar usuario', font=('Bold', 20))
         btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20))
@@ -63,6 +77,7 @@ def open():
     
     create_treeview()
     bottom_menu()
+    fill_treeView()
 
     screen.grab_set()
     screen.mainloop()

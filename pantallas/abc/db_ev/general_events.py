@@ -10,3 +10,10 @@ def get_element_id(values):
     id = data[0][0]
 
     return id
+
+def get_all_table(table):
+    db = Database()
+
+    data_table = db.getTable(table)
+
+    return data_table

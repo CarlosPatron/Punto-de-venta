@@ -1,7 +1,8 @@
 import customtkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from .abc.productos import add, modify, add_inv, get_events, del_events
+from .abc.productos import add, modify, add_inv, del_events
+from .abc.db_ev import general_events as ge
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -12,7 +13,7 @@ def open():
     screen.title('Inventario')
 
     def test():
-        get_events.get_all_table()
+        ge.get_all_table('productos')
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)
@@ -49,7 +50,7 @@ def open():
         style.configure('Treeview.Heading', font=(None, 14))
 
     def fill_treeview():
-        data = get_events.get_all_table()
+        data = ge.get_all_table('productos')
 
         clear_treeview()
         

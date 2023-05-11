@@ -63,7 +63,7 @@ class Database:
             if opc=='Producto':
                 command = f"INSERT INTO {table} (codigo, nombre, precio_compra, precio_venta, stock, status) VALUES ('{obj.codigo}', '{obj.nombre}', {float(obj.precio_compra)}, {float(obj.precio_venta)}, {int(obj.stock)}, {obj.state});"
             elif opc=='Empleado':
-                command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, num_empleado, rol, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', {obj.num_empleado} '{obj.rol}', {obj.state});"
+                command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, num_empleado, rol, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', {obj.num_empleado} {obj.rol}, {obj.state});"
             elif opc=='Cliente':
                 command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, email, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', '{obj.email}', {obj.state});"
             elif opc=='Proveedor':
