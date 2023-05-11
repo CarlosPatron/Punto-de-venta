@@ -9,6 +9,7 @@ def open():
     screen = tk.CTkToplevel()
     screen.geometry('600x400')
     screen.title('Iniciar sesión')
+    screen.resizable(False, False)
 
     def on_press():
         num_empleado = entry_user.get()

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Usuario:
     id = 0
     nombre = ''
@@ -62,6 +64,9 @@ class Venta:
     descuento = 0.0
     importe_iva = 0.0
     importe_total = 0.0
-    pago_cliente = 0.0
+    fecha = datetime
     cambio = 0.0
     state = 1
+
+class VentaFactura(Venta):
+    nombre_cliente = ''

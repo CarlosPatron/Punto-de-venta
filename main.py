@@ -1,6 +1,7 @@
 from tkinter import ttk
 import customtkinter as tk
 from pantallas import login, inventario, empleados, clientes
+from pantallas.abc.codigo_manual import code
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -12,6 +13,9 @@ root.state('zoomed')
 
 def press_user_button():
     login.open()
+
+def press_code_button():
+    code.open(tree)
 
 def create_top_menu():
     global btn_user
@@ -78,17 +82,20 @@ def create_bottom_menu():
     global btn_cobrar_factura
     global btn_quitar_producto
     global btn_cancelar_venta
+    global btn_introducir_codigo
 
     # Menu elements
     botMenuFrame = tk.CTkFrame(master=root)
-    menu_items = ['btn_cobrar', 'btn_cobrar_factura', 'btn_quitar_producto', 'btn_cancelar_venta']
-    btn_text = ['✓ Cobrar', 'Cobrar con factura', 'Quitar producto', 'Cancelar venta']
+    menu_items = ['btn_cobrar', 'btn_cobrar_factura', 'btn_quitar_producto', 'btn_cancelar_venta', 'btn_introducir_codigo']
 
-    for x in range(len(menu_items)):
-        exec(f"{menu_items[x]} = tk.CTkButton(master=botMenuFrame, text='{btn_text[x]}', font=('Bold', 20))")
+    btn_cobrar = tk.CTkButton(master=botMenuFrame, text='✓ Cobrar', font=('Bold', 20))
+    btn_cobrar_factura = tk.CTkButton(master=botMenuFrame, text='Cobrar con factura', font=('Bold', 20))
+    btn_quitar_producto = tk.CTkButton(master=botMenuFrame, text='Quitar producto', font=('Bold', 20))
+    btn_cancelar_venta = tk.CTkButton(master=botMenuFrame, text='Cancelar venta', font=('Bold', 20))
+    btn_introducir_codigo = tk.CTkButton(master=botMenuFrame, text='Código manual', font=('Bold', 20), command=press_code_button)
 
     # Place items
-    botMenuFrame.pack(side='bottom', fill='x', padx=10, pady=5)
+    botMenuFrame.pack(side='bottom', fill='x', padx=30, pady=5)
     for x in range(len(menu_items)):
         exec(f"{menu_items[x]}.pack(side='left', padx=5, pady=5)")
 
