@@ -19,37 +19,50 @@ class Database:
     
     def addElement(self, obj, table, opc):
         command = self.selectCmd(opc, table, obj)
-        self.exeCmd(command)
+        self.exeCmd(command, 'add')
     
     def getElementbyId(self, table, id, column):
         command = f"SELECT * FROM {table} WHERE {column} = {str(id)};"
-        self.exeCmd(command)
+        self.exeCmd(command, 'get')
 
     def getTable(self, table):
-        command = f"SELECT * FROM {table};"
-        self.exeCmd(command)
+        command = f"SELECT * FROM {table} WHERE status = true;"
+        data = self.exeCmd(command, 'get')
 
-    def deleteElement(self, table, id, column):
-        command = f"DELETE FROM {table} WHERE {column} = {str(id)};"
-        self.exeCmd(command)
+        return data
 
-    def exeCmd(self, command):
+    def deleteElement(self, table, codigo):
+        command = f"UPDATE {table} SET status = false WHERE codigo = {codigo};"
+        self.exeCmd(command, 'delete')
+
+    # Falta terminar la sentencia
+    def updateElement(self, table, obj):
+        command = f"UPDATE {table} "
+        self.exeCmd(command, 'update')
+
+    def exeCmd(self, command, type):
         cnx, cursor = self.connectDB()
 
         cursor.execute(command)
-        cnx.commit()
+
+        if type=='get':
+            data = cursor.fetchall()
+            return data
+        else:
+            cnx.commit()
+
         cnx.close()
 
     def selectCmd(self, opc, table, obj):
         if opc=='Producto':
-            command = f"INSERT INTO {table} (codigo, nombre, precio_compra, precio_venta, stock) VALUES ('{obj.codigo}', '{obj.nombre}', {float(obj.precio_compra)}, {float(obj.precio_venta)}, {int(obj.stock)});"
+            command = f"INSERT INTO {table} (codigo, nombre, precio_compra, precio_venta, stock, status) VALUES ('{obj.codigo}', '{obj.nombre}', {float(obj.precio_compra)}, {float(obj.precio_venta)}, {int(obj.stock)}, {obj.state});"
         elif opc=='Empleado':
-            command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, rol) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', '{obj.rol}');"
+            command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, num_empleado, rol, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', {obj.num_empleado} '{obj.rol}', {obj.state});"
         elif opc=='Cliente':
-            command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, email) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', '{obj.email}');"
+            command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, email, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', '{obj.email}', {obj.state});"
         elif opc=='Proveedor':
-            command = f"INSERT INTO {table} (nombre, phone, email) VALUES ('{obj.nombre}', '{obj.phone}', '{obj.email}');"
+            command = f"INSERT INTO {table} (nombre, phone, email, status) VALUES ('{obj.nombre}', '{obj.phone}', '{obj.email}', {obj.state});"
         elif opc=='Sucursal':
-            command = f"INSERT INTO {table} (nombre, direccion, phone) VALUES ('{obj.nombre}', '{obj.direccion}', '{obj.phone}');"
+            command = f"INSERT INTO {table} (nombre, direccion, phone, status) VALUES ('{obj.nombre}', '{obj.direccion}', '{obj.phone}, {obj.state}');"
 
         return command

@@ -4,8 +4,10 @@ class Usuario:
     ap_p = ''
     ap_m = ''
     phone = ''
+    state = 1
 
 class Empleado(Usuario):
+    num_empleado = ''
     rol = ''
 
 class Cliente(Usuario):
@@ -16,6 +18,7 @@ class Proveedor:
     nombre = ''
     phone = ''
     email = ''
+    state = 1
 
 class Direccion:
     id = 0
@@ -31,6 +34,7 @@ class Sucursal:
     nombre = ''
     direccion = Direccion
     phone = ''
+    state = 1
 
 class Producto:
     codigo = ''
@@ -38,6 +42,7 @@ class Producto:
     precio_compra = 0.0
     precio_venta = 0.0
     stock = 0
+    state = 1
 
 class Compra:
     id = 0
@@ -46,6 +51,7 @@ class Compra:
     descuento = 0.0
     importe_iva = 0.0
     importe_total = 0.0
+    state = 1
 
 
 class Venta:
@@ -57,3 +63,4 @@ class Venta:
     importe_total = 0.0
     pago_cliente = 0.0
     cambio = 0.0
+    state = 1

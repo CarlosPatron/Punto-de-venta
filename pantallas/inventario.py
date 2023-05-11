@@ -1,6 +1,6 @@
 import customtkinter as tk
 from tkinter import ttk
-from .abc.productos import add, modify
+from .abc.productos import add, modify, add_inv, get_events
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -11,7 +11,7 @@ def open():
     screen.title('Inventario')
 
     def test():
-        print('Hello')
+        get_events.get_all_table()
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)
@@ -47,12 +47,33 @@ def open():
         style = ttk.Style()
         style.configure('Treeview.Heading', font=(None, 14))
 
+    def fill_treeview():
+        data = get_events.get_all_table()
+
+        clear_treeview()
+        
+        for x in range(len(data)):
+            tree.insert(parent='', index='end', iid=x, text='', values=(data[x][1], data[x][2], data[x][3], data[x][4], data[x][5], data[x][6]))
+    
+    def clear_treeview():
+        for x in tree.get_children():
+            tree.delete(x)
+        screen.update()
+
+    def press_add_button():
+        add.open()
+        fill_treeview()
+
+        screen.grab_set()
+
     def bottom_menu():
-        btn_add = tk.CTkButton(master=frame, text='Agregar producto', font=('Bold', 20), command=add.open)
+        btn_add_inv = tk.CTkButton(master=frame, text='Agregar existencias', font=('Bold', 20), command=add_inv.open)
+        btn_add = tk.CTkButton(master=frame, text='Registrar producto', font=('Bold', 20), command=press_add_button)
         btn_modify = tk.CTkButton(master=frame, text='Modificar producto', font=('Bold', 20), command=modify.open)
         btn_delete = tk.CTkButton(master=frame, text='Eliminar producto', font=('Bold', 20))
-        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20))
+        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=test)
 
+        btn_add_inv.pack(padx=10, pady=5, side='left', anchor='sw')
         btn_add.pack(padx=10, pady=5, side='left', anchor='sw')
         btn_modify.pack(padx=10, pady=5, side='left', anchor='sw')
         btn_delete.pack(padx=10, pady=5, side='left', anchor='sw')
@@ -60,6 +81,7 @@ def open():
     
     create_treeview()
     bottom_menu()
+    fill_treeview()
 
     screen.grab_set()
     screen.mainloop()

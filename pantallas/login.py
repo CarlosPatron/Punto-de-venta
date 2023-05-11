@@ -15,7 +15,7 @@ def open():
     frame.pack(padx=120, pady=40, fill='both', expand=True)
     tk.CTkLabel(master=frame, text='Iniciar sesión', font=('Roboto', 24)).pack(padx=10, pady=12)
 
-    entry_user = tk.CTkComboBox(master=frame, values=['1', '2'])
+    entry_user = tk.CTkEntry(master=frame, placeholder_text='Número de empleado')
     entry_password = tk.CTkEntry(master=frame, placeholder_text='Contraseña', show='•')
     btn_login = tk.CTkButton(master=frame, text='Iniciar sesión', command=test)
 

@@ -8,17 +8,18 @@ tk.set_default_color_theme('blue')
 def open():
     screen = tk.CTkToplevel()
     screen.geometry('600x420')
-    screen.title('Agregar producto')
+    screen.title('Registrar producto')
 
     def on_press():
         entrys = [entry_codigo.get(), entry_nombre.get(), entry_precio_compra.get(), entry_precio_venta.get(), entry_stock.get()]
         ev.add_product(entrys)
-        messagebox.showinfo(message='Producto agregado exitosamente', title='Producto agregado')
+        messagebox.showinfo(message='Producto registrado exitosamente', title='Producto registrado')
+        screen.quit()
         screen.destroy()
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)
-    tk.CTkLabel(master=frame, text='Agregar producto', font=('Roboto', 24)).pack(padx=10, pady=12)
+    tk.CTkLabel(master=frame, text='Registrar producto', font=('Roboto', 24)).pack(padx=10, pady=12)
 
     def create_elements():
         global entry_codigo
@@ -33,7 +34,7 @@ def open():
         entry_precio_compra = tk.CTkEntry(master=frame, placeholder_text='Precio de compra')
         entry_precio_venta = tk.CTkEntry(master=frame, placeholder_text='Precio de venta')
         entry_stock = tk.CTkEntry(master=frame, placeholder_text='Cantidad')
-        btn_add = tk.CTkButton(master=frame, text='Agregar', command=on_press)
+        btn_add = tk.CTkButton(master=frame, text='Registrar', command=on_press)
 
         # Place elements
         entry_codigo.pack(padx=10, pady=5)
