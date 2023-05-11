@@ -90,13 +90,13 @@ def open():
             messagebox.showinfo(title='Error', message='Se debe seleccionar un producto')
     
     def press_modify_button():
-        try:
-            element = get_row()
+        element = get_row()
+        if len(element)==0:
+            messagebox.showerror(title='Error', message='Se debe seleccionar un producto')
+        else:
             modify.open(element)
             fill_treeview()
-        except:
-            messagebox.showerror(title='Error', message='Se debe seleccionar un producto')
-    
+            
     def msgBox():
         msg = messagebox.askquestion(title='Eliminar producto', message='¿Seguro que deseas eliminar el producto seleccionado?', icon='warning')
         

@@ -12,10 +12,14 @@ def open():
 
     def on_press():
         entrys = [entry_codigo.get(), entry_nombre.get(), entry_precio_compra.get(), entry_precio_venta.get(), entry_stock.get()]
-        ev.add_product(entrys)
-        messagebox.showinfo(message='Producto registrado exitosamente', title='Producto registrado')
-        screen.quit()
-        screen.destroy()
+        code = ev.add_product(entrys)
+
+        if code==0:
+            messagebox.showinfo(message='Producto registrado exitosamente', title='Producto registrado')
+            screen.quit()
+            screen.destroy()
+        else:
+            messagebox.showerror(message='Producto ya registrado', title='Este producto ya se encontraba registrado')
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)

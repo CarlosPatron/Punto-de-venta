@@ -11,4 +11,18 @@ def add_product(entrys):
     product.precio_venta = entrys[3]
     product.stock = entrys[4]
 
-    db.addElement(product, 'productos', 'Producto')
+    check = check_not_registered(product.codigo)
+    
+    if len(check)==0:
+        db.addElement(product, 'productos', 'Producto')
+    else:
+        return 1
+    
+    return 0
+
+def check_not_registered(codigo):
+    db = database.Database()
+
+    check = db.getElementbyColumn('productos', codigo, 'codigo')
+
+    return check

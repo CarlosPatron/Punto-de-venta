@@ -16,4 +16,18 @@ def modify_product(old_entries, new_entries):
     product.id = general_events.get_element_id(values)
 
     product.codigo = str(new_entries[0])
-    db.updateElement('productos', product, 'Producto')
+    check = check_if_code_exists(product.codigo)
+
+    if len(check)==0:
+        db.updateElement('productos', product, 'Producto')
+    else:
+        return 1
+    
+    return 0
+
+def check_if_code_exists(codigo):
+    db = database.Database()
+
+    check = db.getElementbyColumn('productos', codigo, 'codigo')
+
+    return check

@@ -1,3 +1,4 @@
+from tkinter import messagebox
 import customtkinter as tk
 from . import modify_events as moev
 
@@ -11,7 +12,14 @@ def open(element):
 
     def pressAccept():
         new_entries = get_new_entries()
-        moev.modify_product(element, new_entries)
+        code = moev.modify_product(element, new_entries)
+
+        if code==0:
+            pressCancel()
+        else:
+            messagebox.showerror(title='Producto ya registrado', message='El código pertenece a otro producto')
+
+    def pressCancel():
         screen.quit()
         screen.destroy()
     
@@ -44,6 +52,7 @@ def open(element):
         entry_precio_venta = tk.CTkEntry(master=frame, placeholder_text='Precio de venta')
         entry_stock = tk.CTkEntry(master=frame, placeholder_text='Cantidad')
         btn_accept = tk.CTkButton(master=frame, text='Confirmar', command=pressAccept)
+        btn_cancel = tk.CTkButton(master=frame, text='Cancelar', command=pressCancel)
 
         # Place elements
         entry_codigo.pack(padx=10, pady=5)
@@ -51,7 +60,8 @@ def open(element):
         entry_precio_compra.pack(padx=10, pady=5)
         entry_precio_venta.pack(padx=10, pady=5)
         entry_stock.pack(padx=10, pady=5)
-        btn_accept.pack(padx=10, pady=20)
+        btn_accept.pack(padx=10, pady=20, side='left')
+        btn_cancel.pack(padx=10, pady=20, side='right')
     
     create_elements()
     setData(element)
