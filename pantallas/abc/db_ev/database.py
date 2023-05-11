@@ -18,7 +18,7 @@ class Database:
         return cnx, cnx.cursor()
     
     def addElement(self, obj, table, opc):
-        command = self.selectCmd(opc, table, obj)
+        command = self.selectCmd(opc, table, obj, 'add')
         self.exeCmd(command, 'add')
     
     def getElementbyColumn(self, table, thing, column):
@@ -38,8 +38,8 @@ class Database:
         self.exeCmd(command, 'delete')
 
     # Falta terminar la sentencia
-    def updateElement(self, table, obj):
-        command = f"UPDATE {table} "
+    def updateElement(self, table, obj, opc):
+        command = self.selectCmd(opc, table, obj, 'delete')
         self.exeCmd(command, 'update')
 
     def exeCmd(self, command, type):
@@ -55,16 +55,28 @@ class Database:
 
         cnx.close()
 
-    def selectCmd(self, opc, table, obj):
-        if opc=='Producto':
-            command = f"INSERT INTO {table} (codigo, nombre, precio_compra, precio_venta, stock, status) VALUES ('{obj.codigo}', '{obj.nombre}', {float(obj.precio_compra)}, {float(obj.precio_venta)}, {int(obj.stock)}, {obj.state});"
-        elif opc=='Empleado':
-            command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, num_empleado, rol, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', {obj.num_empleado} '{obj.rol}', {obj.state});"
-        elif opc=='Cliente':
-            command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, email, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', '{obj.email}', {obj.state});"
-        elif opc=='Proveedor':
-            command = f"INSERT INTO {table} (nombre, phone, email, status) VALUES ('{obj.nombre}', '{obj.phone}', '{obj.email}', {obj.state});"
-        elif opc=='Sucursal':
-            command = f"INSERT INTO {table} (nombre, direccion, phone, status) VALUES ('{obj.nombre}', '{obj.direccion}', '{obj.phone}, {obj.state}');"
+    def selectCmd(self, opc, table, obj, action):
+        if action=='add':
+            if opc=='Producto':
+                command = f"INSERT INTO {table} (codigo, nombre, precio_compra, precio_venta, stock, status) VALUES ('{obj.codigo}', '{obj.nombre}', {float(obj.precio_compra)}, {float(obj.precio_venta)}, {int(obj.stock)}, {obj.state});"
+            elif opc=='Empleado':
+                command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, num_empleado, rol, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', {obj.num_empleado} '{obj.rol}', {obj.state});"
+            elif opc=='Cliente':
+                command = f"INSERT INTO {table} (nombre, ap_p, ap_m, phone, email, status) VALUES ('{obj.nombre}', '{obj.ap_p}', '{obj.ap_m}', '{obj.phone}', '{obj.email}', {obj.state});"
+            elif opc=='Proveedor':
+                command = f"INSERT INTO {table} (nombre, phone, email, status) VALUES ('{obj.nombre}', '{obj.phone}', '{obj.email}', {obj.state});"
+            elif opc=='Sucursal':
+                command = f"INSERT INTO {table} (nombre, direccion, phone, status) VALUES ('{obj.nombre}', '{obj.direccion}', '{obj.phone}, {obj.state}');"
+        else:
+            if opc=='Producto':
+                command = f"UPDATE {table} SET codigo = {obj.codigo}, nombre = {obj.nombre}, precio_compra = {obj.precio_compra}, precio_venta = {obj.precio_venta}, stock = {obj.stock} WHERE id = {obj.id};"
+            elif opc=='Empleado':
+                command = f"UPDATE {table} SET nombre = {obj.nombre}, ap_p = {obj.ap_p}, ap_m = {obj.ap_m}, phone = {obj.phone}, num_empleado = {obj.num_empleado}, rol = {obj.rol} WHERE id = {obj.id};"
+            elif opc=='Cliente':
+                command = f"UPDATE {table} SET nombre = {obj.nombre}, ap_p = {obj.ap_p}, ap_m = {obj.ap_m}, phone = {obj.phone}, email = {obj.email} WHERE id = {obj.id};"
+            elif opc=='Proveedor':
+                command = f"UPDATE {table} SET nombre = {obj.nombre}, phone = {obj.phone}, email = {obj.email} WHERE id = {obj.id};"
+            elif opc=='Sucursal':
+                command = f"UPDATE {table} SET nombre = {obj.direccion}, phone = {obj.phone} WHERE id = {obj.id};"
 
         return command
