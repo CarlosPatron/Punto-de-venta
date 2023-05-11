@@ -10,7 +10,12 @@ root.geometry('1280x720')
 root.title('Punto de venta')
 root.state('zoomed')
 
+def press_user_button():
+    login.open()
+
 def create_top_menu():
+    global btn_user
+
     # Menu elements
     menu_items = ['btn_ventas','btn_inventario', 'btn_empleados', 'btn_clientes', 'btn_online']
 
@@ -22,10 +27,10 @@ def create_top_menu():
     btn_online = tk.CTkButton(master=menuFrame, text='Ventas en línea', font=('Bold', 20))
 
     empty_label = tk.CTkLabel(master=menuFrame, text="")
-    btn_user = tk.CTkButton(master=menuFrame, text='Usuario', command=login.open)
+    btn_user = tk.CTkButton(master=menuFrame, text='Usuario', command=press_user_button)
 
     # Place menu items
-    menuFrame.pack(side='top', fill='both', padx=10, pady=10)
+    menuFrame.pack(side='top', fill='both', padx=30, pady=30)
     for x in range(len(menu_items)):
         exec(f"{menu_items[x]}.grid(row=0, column={x}, padx=5, pady=5, sticky='W')")
 
@@ -59,7 +64,7 @@ def create_treeview():
     tree.heading('importe', text='Importe')
 
     # Place TreeView
-    treeFrame.pack(side='top', fill='both', padx=10, pady=30)
+    treeFrame.pack(side='top', fill='both', padx=30, pady=20)
     tree.pack(fill='both')
 
     # Other TreeView Configuration

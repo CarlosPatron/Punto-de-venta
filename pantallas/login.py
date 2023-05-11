@@ -1,4 +1,6 @@
 import customtkinter as tk
+from tkinter import messagebox
+from pantallas.abc.login import login_events as logev
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -8,8 +10,22 @@ def open():
     screen.geometry('600x400')
     screen.title('Iniciar sesión')
 
-    def test():
-        print('Hello')
+    def on_press():
+        num_empleado = entry_user.get()
+        password = entry_password.get()
+
+        if num_empleado=='' or password=='':
+            messagebox.showerror(title='Datos incorrectos', message='Se deben llenar todos los campos')
+        else:
+            try:
+                check = logev.check_login(num_empleado, password)
+                if check==True:
+                    messagebox.showinfo(title='Éxito', message='Se ha iniciado sesión exitosamente')
+                    screen.quit()
+                    screen.destroy()
+            except:
+                messagebox.showerror(title='Datos incorrectos', message='Los datos de incio de sesión no coinciden')
+        
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)
@@ -17,7 +33,7 @@ def open():
 
     entry_user = tk.CTkEntry(master=frame, placeholder_text='Número de empleado')
     entry_password = tk.CTkEntry(master=frame, placeholder_text='Contraseña', show='•')
-    btn_login = tk.CTkButton(master=frame, text='Iniciar sesión', command=test)
+    btn_login = tk.CTkButton(master=frame, text='Iniciar sesión', command=on_press)
 
     # Place elements
     entry_user.pack(padx=10, pady=5)

@@ -8,6 +8,7 @@ class Usuario:
 
 class Empleado(Usuario):
     num_empleado = ''
+    password = ''
     rol = ''
 
 class Cliente(Usuario):
