@@ -1,6 +1,7 @@
 import customtkinter as tk
 from tkinter import ttk
-from .abc.productos import add, modify, add_inv, get_events
+from tkinter import messagebox
+from .abc.productos import add, modify, add_inv, get_events, del_events
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -66,11 +67,30 @@ def open():
 
         screen.grab_set()
 
+    def press_del_button():
+        if msgBox()=='yes':
+            values = ['', 'codigo']
+            values[0] = get_selected_item_id()
+
+            del_events.delete_product(values)
+            fill_treeview()
+    
+    def msgBox():
+        msg = messagebox.askquestion(title='Eliminar producto', message='¿Seguro que deseas eliminar el producto seleccionado?', icon='warning')
+        
+        return msg
+
+    def get_selected_item_id():
+        id_selected_item = tree.focus()
+        value = tree.item(id_selected_item)['values'][0]
+
+        return value
+
     def bottom_menu():
         btn_add_inv = tk.CTkButton(master=frame, text='Agregar existencias', font=('Bold', 20), command=add_inv.open)
         btn_add = tk.CTkButton(master=frame, text='Registrar producto', font=('Bold', 20), command=press_add_button)
         btn_modify = tk.CTkButton(master=frame, text='Modificar producto', font=('Bold', 20), command=modify.open)
-        btn_delete = tk.CTkButton(master=frame, text='Eliminar producto', font=('Bold', 20))
+        btn_delete = tk.CTkButton(master=frame, text='Eliminar producto', font=('Bold', 20), command=press_del_button)
         btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=test)
 
         btn_add_inv.pack(padx=10, pady=5, side='left', anchor='sw')

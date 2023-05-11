@@ -21,9 +21,11 @@ class Database:
         command = self.selectCmd(opc, table, obj)
         self.exeCmd(command, 'add')
     
-    def getElementbyId(self, table, id, column):
-        command = f"SELECT * FROM {table} WHERE {column} = {str(id)};"
-        self.exeCmd(command, 'get')
+    def getElementbyColumn(self, table, thing, column):
+        command = f"SELECT * FROM {table} WHERE {column} = '{str(thing)}';"
+        data = self.exeCmd(command, 'get')
+
+        return data
 
     def getTable(self, table):
         command = f"SELECT * FROM {table} WHERE status = true;"
@@ -31,8 +33,8 @@ class Database:
 
         return data
 
-    def deleteElement(self, table, codigo):
-        command = f"UPDATE {table} SET status = false WHERE codigo = {codigo};"
+    def deleteElement(self, table, id):
+        command = f"UPDATE {table} SET status = false WHERE id = {id};"
         self.exeCmd(command, 'delete')
 
     # Falta terminar la sentencia
