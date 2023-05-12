@@ -7,11 +7,12 @@ tk.set_default_color_theme('blue')
 
 def open():
     screen = tk.CTkToplevel()
-    screen.geometry('600x450')
-    screen.title('Agregar usuario')
+    screen.geometry('600x470')
+    screen.title('Registrar usuario')
+    screen.resizable(False, False)
 
     def on_press():
-        entries_data = [entry_nombre.get(), entry_ap_p.get(), entry_ap_m.get(), entry_num_emp.get(), entry_phone.get(), entry_rol.get()]
+        entries_data = [entry_nombre.get(), entry_ap_p.get(), entry_ap_m.get(), entry_num_emp.get(), entry_password.get(), entry_phone.get(), entry_rol.get()]
         check = check_empty_entries(entries_data)
 
         if check==0:
@@ -42,6 +43,7 @@ def open():
         global entry_ap_p
         global entry_ap_m
         global entry_num_emp
+        global entry_password
         global entry_phone
         global entry_rol
 
@@ -50,6 +52,7 @@ def open():
         entry_ap_p = tk.CTkEntry(master=frame, placeholder_text='Apellido paterno')
         entry_ap_m = tk.CTkEntry(master=frame, placeholder_text='Apellido materno')
         entry_num_emp = tk.CTkEntry(master=frame, placeholder_text='Número de empleado')
+        entry_password = tk.CTkEntry(master=frame, show='•', placeholder_text='Contraseña')
         entry_phone = tk.CTkEntry(master=frame, placeholder_text='Número de teléfono')
         entry_rol = tk.CTkComboBox(master=frame, values=['USUARIO', 'ADMIN'])
         btn_add = tk.CTkButton(master=frame, text='Registrar', command=on_press)
@@ -59,6 +62,7 @@ def open():
         entry_ap_p.pack(padx=10, pady=5)
         entry_ap_m.pack(padx=10, pady=5)
         entry_num_emp.pack(padx=10, pady=5)
+        entry_password.pack(padx=10, pady=5)
         entry_phone.pack(padx=10, pady=5)
         entry_rol.pack(padx=10, pady=5)
         btn_add.pack(padx=10, pady=20)

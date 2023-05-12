@@ -1,7 +1,8 @@
 import customtkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from .abc.empleados import add, modify
 from .abc.db_ev import general_events as ge
+from .abc.empleados import del_events
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -13,7 +14,6 @@ def open():
 
     def fill_treeView():
         data = ge.get_all_table('empleados')
-        print(data)
 
         clear_treeView()
 
@@ -26,6 +26,26 @@ def open():
 
     def press_add_button():
         add.open()
+        fill_treeView()
+
+    def press_del_button():
+        values = ['', 'num_empleado']
+
+        try:
+            values[0] = get_selected_item_column_value(0)
+        except:
+            pass
+
+    def msgBox():
+        msg = messagebox.askquestion(title='Eliminar empleado', message='¿Seguro que deseas eliminar a este empleado?', icon='warning')
+
+        return msg
+
+    def get_selected_item_column_value(column):
+        id_selected_item = tree.focus()
+        value = tree.item(id_selected_item)['values'][column]
+
+        return value
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)

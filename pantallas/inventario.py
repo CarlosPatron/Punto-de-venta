@@ -114,13 +114,16 @@ def open():
         value = tree.item(id_selected_item)['values']
 
         return value
+    
+    def report():
+        messagebox.showwarning(title='Híjole', message='En construcción XD')
 
     def bottom_menu():
         btn_add_inv = tk.CTkButton(master=frame, text='Agregar existencias', font=('Bold', 20), command=press_add_inv_button)
         btn_add = tk.CTkButton(master=frame, text='Registrar producto', font=('Bold', 20), command=press_add_button)
         btn_modify = tk.CTkButton(master=frame, text='Modificar producto', font=('Bold', 20), command=press_modify_button)
         btn_delete = tk.CTkButton(master=frame, text='Eliminar producto', font=('Bold', 20), command=press_del_button)
-        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=test)
+        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=report)
 
         btn_add_inv.pack(padx=10, pady=5, side='left', anchor='sw')
         btn_add.pack(padx=10, pady=5, side='left', anchor='sw')

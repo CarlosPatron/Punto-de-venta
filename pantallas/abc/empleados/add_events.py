@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash
 from ..db_ev import database
 from ..elements.elements import Empleado
 
@@ -8,9 +9,10 @@ def register_user(entries):
     obj.nombre = entries[0].upper()
     obj.ap_p = entries[1].upper()
     obj.ap_m = entries[2].upper()
-    obj.num_empleado = entries[3]
-    obj.phone = entries[4]
-    obj.rol = entries[5]
+    obj.num_empleado = encrypt_password(entries[4])
+    obj.password = entries[4]
+    obj.phone = entries[5]
+    obj.rol = entries[6]
 
     check = check_num_empleado(obj.num_empleado)
 
@@ -27,3 +29,8 @@ def check_num_empleado(num):
     check =  db.getElementbyColumn('empleados', num, 'num_empleado')
 
     return check
+
+def encrypt_password(password):
+    crypted_pass = generate_password_hash(password)
+
+    return crypted_pass
