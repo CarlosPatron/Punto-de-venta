@@ -88,7 +88,7 @@ def open():
                 del_events.delete_product(values)
                 fill_treeview()
         except:
-            messagebox.showinfo(title='Error', message='Se debe seleccionar un producto')
+            messagebox.showerror(title='Error', message='Se debe seleccionar un producto')
     
     def press_modify_button():
         element = get_row()

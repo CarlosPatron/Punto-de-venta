@@ -24,9 +24,17 @@ def open():
                     messagebox.showinfo(title='Éxito', message='Se ha iniciado sesión exitosamente')
                     screen.quit()
                     screen.destroy()
+                else:
+                    messagebox.showerror(title='Datos incorrectos', message='Los datos de incio de sesión no coinciden')
             except:
                 messagebox.showerror(title='Datos incorrectos', message='Los datos de incio de sesión no coinciden')
         
+
+    def show_password():
+        if show_pass.get()==1:
+            entry_password.configure(show='')
+        else:
+            entry_password.configure(show='•')
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)
@@ -35,10 +43,12 @@ def open():
     entry_user = tk.CTkEntry(master=frame, placeholder_text='Número de empleado')
     entry_password = tk.CTkEntry(master=frame, placeholder_text='Contraseña', show='•')
     btn_login = tk.CTkButton(master=frame, text='Iniciar sesión', command=on_press)
+    show_pass = tk.CTkCheckBox(master=frame, text='Mostrar contraseña', onvalue=1, offvalue=0, command=show_password)
 
     # Place elements
     entry_user.pack(padx=10, pady=5)
     entry_password.pack(padx=10, pady=5)
+    show_pass.pack(padx=10, pady=5)
     btn_login.pack(padx=10, pady=50, side='bottom')
 
     screen.grab_set()

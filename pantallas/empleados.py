@@ -28,13 +28,26 @@ def open():
         add.open()
         fill_treeView()
 
+    def press_modify_button():
+        element = get_row()
+
+        if len(element)==0:
+            messagebox.showerror(title='Error', message='Se debe seleccionar un empleado')
+        else:
+            modify.open(element)
+            fill_treeView()
+
     def press_del_button():
         values = ['', 'num_empleado']
 
         try:
             values[0] = get_selected_item_column_value(0)
+
+            if msgBox()=='yes':
+                del_events.delete_user(values)
+                fill_treeView()
         except:
-            pass
+            messagebox.showerror(title='Error', message='Se debe seleccionar un empleado')
 
     def msgBox():
         msg = messagebox.askquestion(title='Eliminar empleado', message='¿Seguro que deseas eliminar a este empleado?', icon='warning')
@@ -47,6 +60,12 @@ def open():
 
         return value
 
+    def get_row():
+        focus = tree.focus()
+        item = tree.item(focus)['values']
+
+        return item
+
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)
     tk.CTkLabel(master=frame, text='Usuarios', font=('Roboto', 24)).pack(padx=10, pady=12)
@@ -54,12 +73,12 @@ def open():
     def create_treeview():
         global tree
 
-        tree_columns = ('id', 'nombre', 'ap_p', 'ap_m', 'rol', 'phone')
+        tree_columns = ('num_empleado', 'nombre', 'ap_p', 'ap_m', 'rol', 'phone')
         tree = ttk.Treeview(master=frame, columns=tree_columns, show='headings')
 
         # Define headings
-        tree.column('id', anchor='center', stretch='no', width=200)
-        tree.heading('id', text='ID de empleado')
+        tree.column('num_empleado', anchor='center', stretch='no', width=200)
+        tree.heading('num_empleado', text='ID de empleado')
 
         tree.column('nombre', anchor='center', stretch='no', width=200)
         tree.heading('nombre', text='Nombre')
@@ -86,8 +105,8 @@ def open():
 
     def bottom_menu():
         btn_add = tk.CTkButton(master=frame, text='Agregar usuario', font=('Bold', 20), command=press_add_button)
-        btn_modify = tk.CTkButton(master=frame, text='Modificar usuario', font=('Bold', 20), command=modify.open)
-        btn_delete = tk.CTkButton(master=frame, text='Eliminar usuario', font=('Bold', 20))
+        btn_modify = tk.CTkButton(master=frame, text='Modificar usuario', font=('Bold', 20), command=press_modify_button)
+        btn_delete = tk.CTkButton(master=frame, text='Eliminar usuario', font=('Bold', 20), command=press_del_button)
         btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20))
 
         btn_add.pack(padx=10, pady=5, side='left', anchor='sw')

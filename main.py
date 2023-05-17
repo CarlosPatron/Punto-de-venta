@@ -9,7 +9,7 @@ tk.set_default_color_theme('blue')
 root = tk.CTk()
 root.geometry('1280x720')
 root.title('Punto de venta')
-root.state('zoomed')
+root.after(0, lambda:root.state('zoomed'))
 
 def press_user_button():
     login.open()
@@ -56,16 +56,16 @@ def create_top_menu():
     btn_clientes = tk.CTkButton(master=menuFrame, text='Clientes', font=('Bold', 20), command=clientes.open)
     btn_online = tk.CTkButton(master=menuFrame, text='Ventas en línea', font=('Bold', 20))
 
-    empty_label = tk.CTkLabel(master=menuFrame, text="")
+    #! empty_label = tk.CTkLabel(master=menuFrame, text="")
     btn_user = tk.CTkButton(master=menuFrame, text='Usuario', command=press_user_button)
 
     # Place menu items
     menuFrame.pack(side='top', fill='both', padx=30, pady=30)
     for x in range(len(menu_items)):
-        exec(f"{menu_items[x]}.grid(row=0, column={x}, padx=5, pady=5, sticky='W')")
+        exec(f"{menu_items[x]}.pack(side='left', padx=5, pady=5)")
 
-    empty_label.grid(row=0, column=len(menu_items), sticky="ew")
-    btn_user.grid(row=0, column=len(menu_items)+1, sticky='E')
+    #! empty_label.grid(row=0, column=len(menu_items), sticky="ew")
+    btn_user.pack(side='right', padx=5, pady=5)
 
 def create_treeview():
     # TreeView
@@ -128,8 +128,5 @@ def create_bottom_menu():
 create_top_menu()
 create_treeview()
 create_bottom_menu()
-
-# Other config
-root.grid_columnconfigure(0, weight=1)
 
 root.mainloop()
