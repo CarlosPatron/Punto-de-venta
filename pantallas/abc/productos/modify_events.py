@@ -13,7 +13,7 @@ def modify_product(old_entries, new_entries):
     product.stock = int(new_entries[4])
 
     values = [product.codigo, 'codigo']
-    product.id = general_events.get_element_id(values)
+    product.id = general_events.get_element_id(values, 'productos')
 
     product.codigo = str(new_entries[0])
     check = check_if_code_exists(product.codigo)

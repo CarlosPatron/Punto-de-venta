@@ -9,8 +9,8 @@ def register_user(entries):
     obj.nombre = entries[0].upper()
     obj.ap_p = entries[1].upper()
     obj.ap_m = entries[2].upper()
-    obj.num_empleado = encrypt_password(entries[4])
-    obj.password = entries[4]
+    obj.num_empleado = entries[3]
+    obj.password = encrypt_password(entries[4])
     obj.phone = entries[5]
     obj.rol = entries[6]
 

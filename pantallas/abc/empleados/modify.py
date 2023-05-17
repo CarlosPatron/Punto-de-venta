@@ -17,7 +17,7 @@ def open():
 
     def create_elements():
         # Create elements
-        entry_id = tk.CTkEntry(master=frame, placeholder_text='ID de empleado')
+        entry_id = tk.CTkEntry(master=frame, placeholder_text='Número de empleado')
         entry_nombre = tk.CTkEntry(master=frame, placeholder_text='Nombre')
         entry_ap_p = tk.CTkEntry(master=frame, placeholder_text='Apellido paterno')
         entry_ap_m = tk.CTkEntry(master=frame, placeholder_text='Apellido materno')
