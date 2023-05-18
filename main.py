@@ -1,4 +1,6 @@
 from tkinter import ttk, messagebox
+import threading
+import keyboard
 import customtkinter as tk
 from pantallas import login, inventario, empleados, clientes
 from pantallas.abc.codigo_manual import code
@@ -10,6 +12,13 @@ root = tk.CTk()
 root.geometry('1280x720')
 root.title('Punto de venta')
 root.after(0, lambda:root.state('zoomed'))
+
+t_add = threading.Thread(target=input_product_code)
+
+#def input_product_code():
+#    if keyboard.wait()
+#        code = str(input())
+#        print(code)
 
 def press_user_button():
     login.open()
@@ -128,5 +137,6 @@ def create_bottom_menu():
 create_top_menu()
 create_treeview()
 create_bottom_menu()
+t_add.start()
 
 root.mainloop()
