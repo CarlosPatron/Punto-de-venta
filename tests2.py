@@ -1,13 +1,13 @@
 import keyboard
-import threading
 
-codes = []
+def wait_string(e):
+    if e.name=='enter':
+        print(code)
+        code = ''
+    else:
+        if len(e.name)==1:
+            code += str(e.name)
 
-def wait_string():
-    while True:
-        codes.append(keyboard.read_key())
-        
-        print(codes)
-
-t1 = threading.Thread(target=wait_string)
-t1.start()
+keyboard.on_press(wait_string)
+while True:
+    pass
