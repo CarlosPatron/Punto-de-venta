@@ -1,5 +1,4 @@
 from tkinter import ttk, messagebox
-from multiprocessing import Process
 import customtkinter as tk
 from pantallas import login, inventario, empleados, clientes
 from pantallas.abc.codigo_manual import code
@@ -10,7 +9,7 @@ tk.set_default_color_theme('blue')
 root = tk.CTk()
 root.geometry('1280x720')
 root.title('Punto de venta')
-root.state('zoomed')
+root.after(0, lambda:root.state('zoomed'))
 
 def press_user_button():
     login.open()
@@ -122,14 +121,6 @@ def create_bottom_menu():
     botMenuFrame.pack(side='bottom', fill='x', padx=30, pady=5)
     for x in range(len(menu_items)):
         exec(f"{menu_items[x]}.pack(side='left', padx=5, pady=5)")
-
-def get_input():
-    code = str(input())
-
-    print(code)
-
-p = Process(target=get_input)
-p.start()
 
 create_top_menu()
 create_treeview()

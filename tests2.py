@@ -1,13 +1,29 @@
+import time
 import keyboard
 
 def wait_string(e):
+    global array_code
+
     if e.name=='enter':
-        print(code)
-        code = ''
+        code = get_code(array_code)
+        print()
+        print(f'Código: {code}')
+        array_code = []
     else:
         if len(e.name)==1:
-            code += str(e.name)
+            print(e.name)
+            array_code.append(e.name)
+
+def get_code(array):
+    code = ''.join(array)
+
+    return code
 
 keyboard.on_press(wait_string)
+array_code = []
+
 while True:
+    #if len(array_code)>0:
+    #    code = ''.join(array_code)
     pass
+    time.sleep(0.1)

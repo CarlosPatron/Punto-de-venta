@@ -1,0 +1,3 @@
+code = input()
+
+print(code)

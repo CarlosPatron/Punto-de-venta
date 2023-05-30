@@ -13,7 +13,7 @@ root.geometry('1280x720')
 root.title('Punto de venta')
 root.after(0, lambda:root.state('zoomed'))
 
-t_add = threading.Thread(target=input_product_code)
+#t_add = threading.Thread(target=input_product_code)
 
 #def input_product_code():
 #    if keyboard.wait()
@@ -137,6 +137,6 @@ def create_bottom_menu():
 create_top_menu()
 create_treeview()
 create_bottom_menu()
-t_add.start()
+#t_add.start()
 
 root.mainloop()
