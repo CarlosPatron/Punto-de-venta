@@ -1,6 +1,6 @@
 from tkinter import ttk, messagebox
 import customtkinter as tk
-from pantallas import login, inventario, empleados, clientes
+from pantallas import login, inventario, empleados, clientes, historial
 from pantallas.abc.codigo_manual import code
 from pantallas.abc.elements.elements import Venta
 from pantallas.abc.db_ev import database
@@ -22,8 +22,8 @@ def purchase():
         messagebox.showerror(title='Error', message='Se debe agregar algún producto')
     else:
         register_purchase()
-        #messagebox.showinfo(title='Venta realizada', message='Venta realizada exitosamente')
-        #clear_treeView()
+        messagebox.showinfo(title='Venta realizada', message='Venta realizada exitosamente')
+        clear_treeView()
 
 def register_purchase():
     tempList = []
@@ -44,10 +44,15 @@ def register_purchase():
 
     fill_purchase_object(v, data)
     v.productos = itemList
+    save_purchase(v)
     #print(f'Fecha: {v.fecha}\nProductos: {v.productos}\nImporte: {v.importe}\nDescuento: {v.descuento}\nCambio: {v.cambio}')
 
 def save_purchase(obj):
     db = database.Database()
+
+    db.connectDB()
+    sql = f"INSERT INTO ventas (num, productos, importe, descuento, fecha) VALUES ({int(obj.num)}, '{obj.productos}', {float(obj.importe)}, {float(obj.descuento)}, '{obj.fecha}');"
+    db.exeCmd(command=sql, type='add')
 
 def fill_purchase_object(obj, data):
     from datetime import datetime
@@ -55,7 +60,9 @@ def fill_purchase_object(obj, data):
     obj.importe = data[1]
     obj.descuento = data[0]
     obj.cambio = data[2]
-    obj.fecha = datetime.now()
+    fecha = datetime.now()
+    fechaFormato = fecha.strftime("%Y-%m-%d %H:%M:%S")
+    obj.fecha = fechaFormato
 
 def press_code_button():
     code.open(tree)
@@ -85,7 +92,7 @@ def create_top_menu():
     menu_items = ['btn_ventas','btn_inventario', 'btn_empleados', 'btn_clientes', 'btn_online']
 
     menuFrame = tk.CTkFrame(master=root)
-    btn_ventas = tk.CTkButton(master=menuFrame, text='Historial de ventas', font=('Bold', 20))
+    btn_ventas = tk.CTkButton(master=menuFrame, text='Historial de ventas', font=('Bold', 20), command=historial.open)
     btn_inventario = tk.CTkButton(master=menuFrame, text='Inventario', font=('Bold', 20), command=inventario.open)
     btn_empleados = tk.CTkButton(master=menuFrame, text='Empleados', font=('Bold', 20), command=empleados.open)
     btn_clientes = tk.CTkButton(master=menuFrame, text='Clientes', font=('Bold', 20), command=clientes.open)
@@ -186,9 +193,11 @@ def threadFunction(array_code):
 
 array_code = [""]
 thread = threading.Thread(target=threadFunction, args=(array_code))
-thread.start()
 
 # Other config
 root.grid_columnconfigure(0, weight=1)
+
+#root.bind('<FocusIn>', thread.start())
+#root.bind('<FocusOut>', thread.)
 
 root.mainloop()

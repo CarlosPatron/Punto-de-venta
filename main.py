@@ -200,6 +200,5 @@ def checkTreeView(given_code):
 create_top_menu()
 create_treeview()
 create_bottom_menu()
-#t_add.start()
 
 root.mainloop()
