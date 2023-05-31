@@ -221,7 +221,26 @@ root.protocol('WM_DELETE_WINDOW', close_window)
 
 array_code = [""]
 thread = threading.Thread(target=threadFunction, args=(array_code))
-thread.start()
+#thread.start()
+
+def stop_thread(arg):
+    global stopThread
+    global thread
+
+    stopThread = True
+    thread.join()
+    print('Hilo detenido')
+
+def start_thread(arg):
+    global stopThread
+    global thread
+
+    stopThread = False
+    thread.start()
+    print('Hilo iniciado')
+
+root.bind('<FocusIn>', start_thread)
+root.bind('<FocusOut>', stop_thread)
 
 def add_product(code):
     last_iid = 0

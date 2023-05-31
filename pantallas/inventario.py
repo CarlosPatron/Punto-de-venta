@@ -1,7 +1,7 @@
 import customtkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from .abc.productos import add, modify, add_inv, del_events
+from .abc.productos import add, modify, add_inv, del_events, report_events
 from .abc.db_ev import general_events as ge
 
 tk.set_appearance_mode('dark')
@@ -116,7 +116,8 @@ def open():
         return value
     
     def report():
-        messagebox.showwarning(title='Híjole', message='En construcción XD')
+        #messagebox.showwarning(title='Híjole', message='En construcción XD')
+        report_events.generate_report()
 
     def bottom_menu():
         btn_add_inv = tk.CTkButton(master=frame, text='Agregar existencias', font=('Bold', 20), command=press_add_inv_button)

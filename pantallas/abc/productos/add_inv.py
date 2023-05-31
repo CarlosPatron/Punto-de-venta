@@ -27,5 +27,7 @@ def open(element):
     entry_qty.pack(padx=10, pady=5)
     btn_confirm.pack(padx=10, pady=50, side='bottom')
 
+    screen.bind('Return', lambda event: on_press())
+
     screen.grab_set()
     screen.mainloop()
