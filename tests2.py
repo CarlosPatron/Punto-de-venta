@@ -6,12 +6,10 @@ def wait_string(e):
 
     if e.name=='enter':
         code = get_code(array_code)
-        print()
         print(f'Código: {code}')
         array_code = []
     else:
         if len(e.name)==1:
-            print(e.name)
             array_code.append(e.name)
 
 def get_code(array):

@@ -56,14 +56,11 @@ class Compra:
     importe_total = 0.0
     state = 1
 
-
 class Venta:
-    id = 0
+    num = 0
     productos = []
     importe = 0.0
     descuento = 0.0
-    importe_iva = 0.0
-    importe_total = 0.0
     fecha = datetime
     cambio = 0.0
     state = 1

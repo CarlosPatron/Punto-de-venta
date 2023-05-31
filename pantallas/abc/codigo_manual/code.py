@@ -12,9 +12,9 @@ def open(tree):
     screen.resizable(False, False)
 
     def on_press():
-        code = check_treeView()
         last_iid = 0
         product = coev.search_product(entry_code.get())
+        code, item = checkTreeView()
 
         if len(product)==0:
             messagebox.showerror(title='Error', message='Producto no encontrado')
@@ -24,25 +24,26 @@ def open(tree):
                     last_iid = int(tree.get_children()[-1])
                 except:
                     pass
+                tree.insert(parent='', index='end', iid=last_iid+1, text='', values=(product[1], 1, product[2], float(product[4]), float(0), float(product[4])))
             else:
-                qty = tree.item(code)['cantidad']
-                print(qty)
+                qty = int(tree.set(item, 'cantidad'))
+                tree.set(item, 'cantidad', qty+1)
 
-            tree.insert(parent='', index='end', iid=last_iid+1, text='', values=(product[1], 1, product[2], float(product[4]), float(0), float(product[4])))
             screen.quit()
             screen.destroy()
-
-    def check_products_list():
-        print()
     
-    def check_treeView():
+    def checkTreeView():
         code = ''
-        qty = len(tree.get_children())
+        given_code = entry_code.get()
 
-        for x in range(qty):
-            code = tree.item(x)['codigo']
+        for item in tree.get_children():
+            column_val =  tree.set(item, 'codigo')
+            if given_code==column_val:
+                code = given_code
+                
+                return code, item
 
-        return code
+        return code, ''
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=100, pady=40, fill='both', expand=True)

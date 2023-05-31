@@ -4,6 +4,8 @@ import keyboard
 import customtkinter as tk
 from pantallas import login, inventario, empleados, clientes
 from pantallas.abc.codigo_manual import code
+from pantallas.abc.codigo_manual import code_events as coev
+import time, keyboard, threading
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -133,6 +135,64 @@ def create_bottom_menu():
     botMenuFrame.pack(side='bottom', fill='x', padx=30, pady=5)
     for x in range(len(menu_items)):
         exec(f"{menu_items[x]}.pack(side='left', padx=5, pady=5)")
+
+def wait_string(e, array_code):
+    if e.name=='enter':
+        code = get_code(array_code)
+        #print(f'Código: {code}')
+        add_product(code=code)
+        array_code.clear()
+    else:
+        if len(e.name)==1:
+            array_code.append(e.name)
+
+def get_code(array):
+    code = ''.join(array)
+
+    return code
+
+def threadFunction(array_code):
+    array_code = list(array_code)
+    keyboard.on_press(lambda event: wait_string(event, array_code))
+    while True:
+        #if len(array_code)>0:
+        #    code = ''.join(array_code)
+        pass
+        time.sleep(0.1)
+
+array_code = [""]
+thread = threading.Thread(target=threadFunction, args=(array_code))
+thread.start()
+
+def add_product(code):
+    last_iid = 0
+    product = coev.search_product(code)
+    code, item = checkTreeView(code)
+
+    if len(product)==0:
+        messagebox.showerror(title='Error', message='Producto no encontrado')
+    else:
+        if len(tree.get_children())==0 or code=='':
+            try:
+                last_iid = int(tree.get_children()[-1])
+            except:
+                pass
+            tree.insert(parent='', index='end', iid=last_iid+1, text='', values=(product[1], 1, product[2], float(product[4]), float(0), float(product[4])))
+        else:
+            qty = int(tree.set(item, 'cantidad'))
+            tree.set(item, 'cantidad', qty+1)
+
+def checkTreeView(given_code):
+        code = ''
+
+        for item in tree.get_children():
+            column_val =  tree.set(item, 'codigo')
+            if given_code==column_val:
+                code = given_code
+                
+                return code, item
+
+        return code, ''
 
 create_top_menu()
 create_treeview()

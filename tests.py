@@ -2,6 +2,8 @@ from tkinter import ttk, messagebox
 import customtkinter as tk
 from pantallas import login, inventario, empleados, clientes
 from pantallas.abc.codigo_manual import code
+from pantallas.abc.elements.elements import Venta
+import time, keyboard, threading
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -19,8 +21,38 @@ def purchase():
     if len(tree.get_children())==0:
         messagebox.showerror(title='Error', message='Se debe agregar algún producto')
     else:
-        messagebox.showinfo(title='Venta realizada', message='Venta realizada exitosamente')
-        clear_treeView()
+        register_purchase()
+        #messagebox.showinfo(title='Venta realizada', message='Venta realizada exitosamente')
+        #clear_treeView()
+
+def register_purchase():
+    tempList = []
+    itemList = []
+    data = [0.0, 0.0, 0.0]
+    v = Venta()
+
+    for item in tree.get_children():
+        pList = tree.item(item)['values']
+        tempList.append(pList[0])
+        tempList.append(pList[1])
+
+        itemList.append(tempList)
+        data[0] += float(pList[4])
+        data[1] += float(pList[5])
+        data[2] += 0
+        tempList = []
+
+    fill_purchase_object(v, data)
+    v.productos = itemList
+    #print(f'Fecha: {v.fecha}\nProductos: {v.productos}\nImporte: {v.importe}\nDescuento: {v.descuento}\nCambio: {v.cambio}')
+
+def fill_purchase_object(obj, data):
+    from datetime import datetime
+
+    obj.importe = data[1]
+    obj.descuento = data[0]
+    obj.cambio = data[2]
+    obj.fecha = datetime.now()
 
 def press_code_button():
     code.open(tree)
@@ -125,6 +157,33 @@ def create_bottom_menu():
 create_top_menu()
 create_treeview()
 create_bottom_menu()
+
+def wait_string(e, array_code):
+    if e.name=='enter':
+        code = get_code(array_code)
+        print(f'Código: {code}')
+        array_code.clear()
+    else:
+        if len(e.name)==1:
+            array_code.append(e.name)
+
+def get_code(array):
+    code = ''.join(array)
+
+    return code
+
+def threadFunction(array_code):
+    array_code = list(array_code)
+    keyboard.on_press(lambda event: wait_string(event, array_code))
+    while True:
+        #if len(array_code)>0:
+        #    code = ''.join(array_code)
+        pass
+        time.sleep(0.1)
+
+array_code = [""]
+thread = threading.Thread(target=threadFunction, args=(array_code))
+thread.start()
 
 # Other config
 root.grid_columnconfigure(0, weight=1)
