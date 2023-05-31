@@ -197,14 +197,27 @@ def get_code(array):
 
     return code
 
+stopThread = False
+
 def threadFunction(array_code):
+    global stopThread
     array_code = list(array_code)
     keyboard.on_press(lambda event: wait_string(event, array_code))
-    while True:
+    while not stopThread:
         #if len(array_code)>0:
         #    code = ''.join(array_code)
         pass
         time.sleep(0.1)
+    print('Hilo detenido')
+
+def close_window():
+    global stopThread
+
+    stopThread = True
+    thread.join()
+    root.destroy()
+
+root.protocol('WM_DELETE_WINDOW', close_window)
 
 array_code = [""]
 thread = threading.Thread(target=threadFunction, args=(array_code))
