@@ -140,7 +140,10 @@ def wait_string(e, array_code):
     if e.name=='enter':
         code = get_code(array_code)
         #print(f'Código: {code}')
-        add_product(code=code)
+        try:
+            add_product(code=code)
+        except:
+            pass
         array_code.clear()
     else:
         if len(e.name)==1:

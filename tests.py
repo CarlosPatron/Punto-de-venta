@@ -3,6 +3,7 @@ import customtkinter as tk
 from pantallas import login, inventario, empleados, clientes
 from pantallas.abc.codigo_manual import code
 from pantallas.abc.elements.elements import Venta
+from pantallas.abc.db_ev import database
 import time, keyboard, threading
 
 tk.set_appearance_mode('dark')
@@ -16,7 +17,6 @@ root.after(0, lambda:root.state('zoomed'))
 def press_user_button():
     login.open()
 
-# ! Es sólo una simulación
 def purchase():
     if len(tree.get_children())==0:
         messagebox.showerror(title='Error', message='Se debe agregar algún producto')
@@ -45,6 +45,9 @@ def register_purchase():
     fill_purchase_object(v, data)
     v.productos = itemList
     #print(f'Fecha: {v.fecha}\nProductos: {v.productos}\nImporte: {v.importe}\nDescuento: {v.descuento}\nCambio: {v.cambio}')
+
+def save_purchase(obj):
+    db = database.Database()
 
 def fill_purchase_object(obj, data):
     from datetime import datetime
