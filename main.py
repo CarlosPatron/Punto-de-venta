@@ -5,6 +5,7 @@ import customtkinter as tk
 from pantallas import login, inventario, empleados, clientes
 from pantallas.abc.codigo_manual import code
 from pantallas.abc.codigo_manual import code_events as coev
+from pantallas.abc.elements.elements import Venta
 import time, keyboard, threading
 
 tk.set_appearance_mode('dark')
@@ -30,8 +31,50 @@ def purchase():
     if len(tree.get_children())==0:
         messagebox.showerror(title='Error', message='Se debe agregar algún producto')
     else:
+        register_purchase()
         messagebox.showinfo(title='Venta realizada', message='Venta realizada exitosamente')
         clear_treeView()
+
+def register_purchase():
+    tempList = []
+    itemList = []
+    data = [0.0, 0.0, 0.0]
+    v = Venta()
+
+    for item in tree.get_children():
+        pList = tree.item(item)['values']
+        tempList.append(pList[0])
+        tempList.append(pList[1])
+
+        itemList.append(tempList)
+        data[0] += float(pList[4])
+        data[1] += float(pList[5])
+        data[2] += 0
+        tempList = []
+
+    fill_purchase_object(v, data)
+    v.productos = itemList
+    save_purchase(v)
+    #print(f'Fecha: {v.fecha}\nProductos: {v.productos}\nImporte: {v.importe}\nDescuento: {v.descuento}\nCambio: {v.cambio}')
+
+def save_purchase(obj):
+    from pantallas.abc.db_ev import database
+
+    db = database.Database()
+
+    db.connectDB()
+    sql = f"INSERT INTO ventas (num, productos, importe, descuento, fecha) VALUES ({int(obj.num)}, '{obj.productos}', {float(obj.importe)}, {float(obj.descuento)}, '{obj.fecha}');"
+    db.exeCmd(command=sql, type='add')
+
+def fill_purchase_object(obj, data):
+    from datetime import datetime
+
+    obj.importe = data[1]
+    obj.descuento = data[0]
+    obj.cambio = data[2]
+    fecha = datetime.now()
+    fechaFormato = fecha.strftime("%Y-%m-%d %H:%M:%S")
+    obj.fecha = fechaFormato
 
 def press_code_button():
     code.open(tree)
