@@ -1,6 +1,7 @@
 import customtkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from .abc.historial import history_events as hiev
+from .abc.historial import report_events
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -56,7 +57,21 @@ def open():
             tree.delete(x)
         screen.update()
 
+    def press_report():
+        report_name = report_events.generate_report()
+        messagebox.showinfo(title='Reporte generado', message=f'Reporte generado.\nNombre: {report_name}')
+
+
+    def create_bottom_menu():
+        btn_detail = tk.CTkButton(master=frame, text='Ver detalles', font=('Bold', 20))
+        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=press_report)
+
+        # Place buttons
+        btn_detail.pack(padx=5, pady=5, side='left')
+        btn_report.pack(padx=5, pady=5, side='left')
+
     create_treeview()
+    create_bottom_menu()
     fill_TreeView()
 
     screen.mainloop()

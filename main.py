@@ -28,6 +28,12 @@ def purchase():
         messagebox.showinfo(title='Venta realizada', message='Venta realizada exitosamente')
         clear_treeView()
 
+def update_total():
+    importe = 0
+    for item in tree.get_children():
+        importe += float(tree.item(item)['values'][5])
+    lbl_precio.configure(text=f'{importe}')
+
 def register_purchase():
     tempList = []
     itemList = []
@@ -62,7 +68,7 @@ def save_purchase(obj):
 def fill_purchase_object(obj, data):
     from datetime import datetime
 
-    obj.importe = data[1]
+    obj.importe = float(lbl_precio.cget('text'))
     obj.descuento = data[0]
     obj.cambio = data[2]
     fecha = datetime.now()
@@ -71,6 +77,7 @@ def fill_purchase_object(obj, data):
 
 def press_code_button():
     code.open(tree)
+    update_total()
 
 def press_quit():
     selected = tree.focus()
@@ -85,27 +92,24 @@ def cancel_sale():
     
     if option=='yes':
         clear_treeView()
-        lbl_total.config(text='0')
+        lbl_precio.config(text='0')
 
 def clear_treeView():
     for x in tree.get_children():
         tree.delete(x)
 
-def press_historial():
-    print()
-
 def create_top_menu():
     global btn_user
 
     # Menu elements
-    menu_items = ['btn_ventas','btn_inventario', 'btn_empleados', 'btn_clientes']
+    menu_items = ['btn_ventas','btn_inventario', 'btn_empleados', 'btn_clientes', 'btn_online']
 
     menuFrame = tk.CTkFrame(master=root)
     btn_ventas = tk.CTkButton(master=menuFrame, text='Historial de ventas', font=('Bold', 20), command=historial.open)
     btn_inventario = tk.CTkButton(master=menuFrame, text='Inventario', font=('Bold', 20), command=inventario.open)
     btn_empleados = tk.CTkButton(master=menuFrame, text='Empleados', font=('Bold', 20), command=empleados.open)
     btn_clientes = tk.CTkButton(master=menuFrame, text='Clientes', font=('Bold', 20), command=clientes.open)
-    #btn_online = tk.CTkButton(master=menuFrame, text='Ventas en línea', font=('Bold', 20))
+    btn_online = tk.CTkButton(master=menuFrame, text='Ventas en línea', font=('Bold', 20), command=update_total)
 
     #! empty_label = tk.CTkLabel(master=menuFrame, text="")
     btn_user = tk.CTkButton(master=menuFrame, text='👤', font=('Roboto', 30), command=press_user_button)
@@ -121,7 +125,7 @@ def create_top_menu():
 def create_treeview():
     # TreeView
     global tree
-    global lbl_total
+    global lbl_precio
     tree_columns = ('codigo', 'cantidad', 'producto', 'precio_unitario', 'descuento', 'importe')
     treeFrame = tk.CTkFrame(master=root)
     tree = ttk.Treeview(master=treeFrame, columns=tree_columns, show='headings')
@@ -186,7 +190,8 @@ def wait_string(e, array_code):
         code = get_code(array_code)
         #print(f'Código: {code}')
         try:
-            add_product(code=code, label=lbl_total)
+            add_product(code=code, label=lbl_precio)
+            update_total()
 
         except:
             pass
@@ -211,7 +216,6 @@ def threadFunction(array_code):
         #    code = ''.join(array_code)
         pass
         time.sleep(0.1)
-    print('Hilo detenido')
 
 def close_window():
     global stopThread

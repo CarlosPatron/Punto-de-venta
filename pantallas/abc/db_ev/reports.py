@@ -24,6 +24,10 @@ def export_to_pdf(data, opt):
         xlist = [x + x_offset for x in [0, 30, 130, 260, 330, 400, 450, 500]]
     elif opt=='Clientes':
         xlist = [x + x_offset for x in [0, 30, 130, 210, 280, 350, 455, 500]]
+    elif opt=='Empleados':
+        xlist = [x + x_offset for x in [0, 30, 130, 210, 280, 350, 455, 500]]
+    elif opt=='Ventas':
+        xlist = [x + x_offset for x in [0, 30, 130, 210, 280, 350, 455, 500]]
     ylist = [h - y_offset - i*padding for i in range(max_rows_per_page + 1)]
 
     #PAGE_HEIGHT = canvas._pagesize[1]
@@ -40,3 +44,5 @@ def export_to_pdf(data, opt):
         
         c.showPage()
     c.save()
+
+    return name
