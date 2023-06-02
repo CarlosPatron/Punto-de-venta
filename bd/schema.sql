@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `db_puntoventa` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db_puntoventa`;
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: db_puntoventa
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -54,7 +54,7 @@ DROP TABLE IF EXISTS `empleados`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `empleados` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `num_empleado` varchar(10) NOT NULL,
   `password` varchar(256) NOT NULL,
   `nombre` varchar(45) NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE `empleados` (
   `phone` varchar(10) DEFAULT NULL,
   `status` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`,`num_empleado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `empleados` (
 
 LOCK TABLES `empleados` WRITE;
 /*!40000 ALTER TABLE `empleados` DISABLE KEYS */;
-INSERT INTO `empleados` VALUES (1,'1234567890','pbkdf2:sha256:260000$ikleysOJYDvBKPzV$2b523f9a81c246364f4b650f564875e23b93f24ec081dd978575a3d22797add4','CARLOS','PATRON','ORTEGA','ADMIN',NULL,1);
+INSERT INTO `empleados` VALUES (1,'1234567890','pbkdf2:sha256:260000$ikleysOJYDvBKPzV$2b523f9a81c246364f4b650f564875e23b93f24ec081dd978575a3d22797add4','CARLOS','PATRON','ORTEGA','ADMIN',NULL,1),(2,'123456','pbkdf2:sha256:260000$YDmoY9aQQ9xjHrGo$7b118432c2718edde0da10cea73ff5451a61b380afa134f599b5b626d760b8f6','PRUEBA','PRUEBA','PRUEBA','USUARIO','1234567890',1);
 /*!40000 ALTER TABLE `empleados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,4 +144,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-01 18:55:11
+-- Dump completed on 2023-06-02  5:20:04
