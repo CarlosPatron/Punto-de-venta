@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `db_puntoventa` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db_puntoventa`;
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: db_puntoventa
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,6 +16,35 @@ USE `db_puntoventa`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `clientes`
+--
+
+DROP TABLE IF EXISTS `clientes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `clientes` (
+  `id_cliente` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `ap_p` varchar(45) NOT NULL,
+  `ap_m` varchar(45) NOT NULL,
+  `phone` varchar(10) NOT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `status` tinyint NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clientes`
+--
+
+LOCK TABLES `clientes` WRITE;
+/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+INSERT INTO `clientes` VALUES (1,'CARLOS','PATRON','ORTEGA','6682334433','ernjgboernhjtr',1),(2,'prueba','prueba','prueba','1234567890','wefhurheig',1),(3,'prueba1','prueba1','prueba1','1234567890','fdhgui3hri',1);
+/*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `empleados`
@@ -64,7 +93,7 @@ CREATE TABLE `productos` (
   `stock` int NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`,`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +102,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (3,'123456','Guitarra genérica',1000,2500,25,1),(4,'1234','Guitarra Telecastro',12000,20000,20,1),(5,'159','Test01',5,10,50,1),(6,'1','prueba',10,15,20,0),(7,'2','prueba2',10,15,50,1),(8,'3','prueba3',10,15,10,1),(9,'4','test4',10,15,10,1),(10,'5','test05',10,15,10,1),(11,'123456789','test06',196,231,25,1),(12,'6','test06',15,20,20,1),(13,'7506339390230','Prueba Lector',200,100,200,1);
+INSERT INTO `productos` VALUES (3,'123456','Guitarra genérica',1000,2500,25,1),(4,'1234','Guitarra Telecastro',12000,20000,20,1),(5,'159','Test01',5,10,50,1),(6,'1','prueba',10,15,20,0),(7,'2','prueba2',10,15,50,1),(8,'3','prueba3',10,15,25,1),(9,'4','test4',10,15,10,1),(10,'5','test05',10,15,10,1),(11,'123456789','test06',196,231,25,1),(12,'6','test06',15,20,20,1),(13,'7506339390230','Prueba Lector',200,100,200,1),(14,'75067229','Prueba lector',200,300,30,1);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +122,7 @@ CREATE TABLE `ventas` (
   `fecha` datetime NOT NULL,
   `status` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`,`num`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,6 +131,7 @@ CREATE TABLE `ventas` (
 
 LOCK TABLES `ventas` WRITE;
 /*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
+INSERT INTO `ventas` VALUES (1,0,'[[1234, 1], [123456, 1]]',22500,0,'2023-05-31 06:54:03',1),(2,0,'[[123456, 1], [1234, 1]]',22500,0,'2023-05-31 06:56:01',1),(3,0,'[[7506339390230, 1]]',100,0,'2023-05-31 07:04:33',1),(4,0,'[[75067229, 4]]',300,0,'2023-05-31 14:49:05',1);
 /*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -114,4 +144,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-31  5:25:07
+-- Dump completed on 2023-06-01 18:55:11
