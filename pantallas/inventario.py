@@ -116,7 +116,6 @@ def open():
         return value
     
     def report():
-        #messagebox.showwarning(title='Híjole', message='En construcción XD')
         report_events.generate_report()
 
     def bottom_menu():

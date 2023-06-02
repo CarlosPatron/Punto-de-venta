@@ -2,6 +2,7 @@ import itertools
 from datetime import datetime
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, letter
+from reportlab.lib.utils import ImageReader
 
 def grouper(iterable, n):
     args = [iter(iterable)] * n
@@ -19,8 +20,16 @@ def export_to_pdf(data, opt):
     y_offset = 50
     padding = 15
 
-    xlist = [x + x_offset for x in [0, 30, 130, 260, 330, 400, 450, 500]]
+    if opt=='Productos':
+        xlist = [x + x_offset for x in [0, 30, 130, 260, 330, 400, 450, 500]]
+    elif opt=='Clientes':
+        xlist = [x + x_offset for x in [0, 30, 130, 210, 280, 350, 455, 500]]
     ylist = [h - y_offset - i*padding for i in range(max_rows_per_page + 1)]
+
+    #PAGE_HEIGHT = canvas._pagesize[1]
+    #canvas.drawString(50, 50, opt)
+    #img = 'guitar.jpg'
+    #c.drawImage(img, 10, 10, mask='auto')
 
     for rows in grouper(data, max_rows_per_page):
         rows = tuple(filter(bool, rows))

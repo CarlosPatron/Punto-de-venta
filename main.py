@@ -2,7 +2,7 @@ from tkinter import ttk, messagebox
 import threading
 import keyboard
 import customtkinter as tk
-from pantallas import login, inventario, empleados, clientes
+from pantallas import login, inventario, empleados, clientes, historial
 from pantallas.abc.codigo_manual import code
 from pantallas.abc.codigo_manual import code_events as coev
 from pantallas.abc.elements.elements import Venta
@@ -15,13 +15,6 @@ root = tk.CTk()
 root.geometry('1280x720')
 root.title('Punto de venta')
 root.after(0, lambda:root.state('zoomed'))
-
-#t_add = threading.Thread(target=input_product_code)
-
-#def input_product_code():
-#    if keyboard.wait()
-#        code = str(input())
-#        print(code)
 
 def press_user_button():
     login.open()
@@ -92,26 +85,30 @@ def cancel_sale():
     
     if option=='yes':
         clear_treeView()
+        lbl_total.config(text='0')
 
 def clear_treeView():
     for x in tree.get_children():
         tree.delete(x)
 
+def press_historial():
+    print()
+
 def create_top_menu():
     global btn_user
 
     # Menu elements
-    menu_items = ['btn_ventas','btn_inventario', 'btn_empleados', 'btn_clientes', 'btn_online']
+    menu_items = ['btn_ventas','btn_inventario', 'btn_empleados', 'btn_clientes']
 
     menuFrame = tk.CTkFrame(master=root)
-    btn_ventas = tk.CTkButton(master=menuFrame, text='Historial de ventas', font=('Bold', 20))
+    btn_ventas = tk.CTkButton(master=menuFrame, text='Historial de ventas', font=('Bold', 20), command=historial.open)
     btn_inventario = tk.CTkButton(master=menuFrame, text='Inventario', font=('Bold', 20), command=inventario.open)
     btn_empleados = tk.CTkButton(master=menuFrame, text='Empleados', font=('Bold', 20), command=empleados.open)
     btn_clientes = tk.CTkButton(master=menuFrame, text='Clientes', font=('Bold', 20), command=clientes.open)
-    btn_online = tk.CTkButton(master=menuFrame, text='Ventas en línea', font=('Bold', 20))
+    #btn_online = tk.CTkButton(master=menuFrame, text='Ventas en línea', font=('Bold', 20))
 
     #! empty_label = tk.CTkLabel(master=menuFrame, text="")
-    btn_user = tk.CTkButton(master=menuFrame, text='Usuario', command=press_user_button)
+    btn_user = tk.CTkButton(master=menuFrame, text='👤', font=('Roboto', 30), command=press_user_button)
 
     # Place menu items
     menuFrame.pack(side='top', fill='both', padx=30, pady=30)
@@ -124,9 +121,12 @@ def create_top_menu():
 def create_treeview():
     # TreeView
     global tree
+    global lbl_total
     tree_columns = ('codigo', 'cantidad', 'producto', 'precio_unitario', 'descuento', 'importe')
     treeFrame = tk.CTkFrame(master=root)
     tree = ttk.Treeview(master=treeFrame, columns=tree_columns, show='headings')
+    lbl_total = tk.CTkLabel(master=treeFrame, text='Total: $', font=('Roboto', 20))
+    lbl_precio =  tk.CTkLabel(master=treeFrame, text='0', font=('Roboto', 20))
 
     # Define headings
     tree.column('codigo', anchor='center', stretch='no', width=200)
@@ -150,6 +150,8 @@ def create_treeview():
     # Place TreeView
     treeFrame.pack(side='top', fill='both', padx=30, pady=20)
     tree.pack(fill='both')
+    lbl_precio.pack(padx=5, pady=5, side='right')
+    lbl_total.pack(padx=5, pady=5, side='right')
 
     # Other TreeView Configuration
     tree.config(height=30)
@@ -184,7 +186,8 @@ def wait_string(e, array_code):
         code = get_code(array_code)
         #print(f'Código: {code}')
         try:
-            add_product(code=code)
+            add_product(code=code, label=lbl_total)
+
         except:
             pass
         array_code.clear()
@@ -221,7 +224,7 @@ root.protocol('WM_DELETE_WINDOW', close_window)
 
 array_code = [""]
 thread = threading.Thread(target=threadFunction, args=(array_code))
-#thread.start()
+thread.start()
 
 def stop_thread(arg):
     global stopThread
@@ -239,10 +242,10 @@ def start_thread(arg):
     thread.start()
     print('Hilo iniciado')
 
-root.bind('<FocusIn>', start_thread)
-root.bind('<FocusOut>', stop_thread)
+#root.bind('<FocusIn>', start_thread)
+#root.bind('<FocusOut>', stop_thread)
 
-def add_product(code):
+def add_product(code, label):
     last_iid = 0
     product = coev.search_product(code)
     code, item = checkTreeView(code)
@@ -259,6 +262,14 @@ def add_product(code):
         else:
             qty = int(tree.set(item, 'cantidad'))
             tree.set(item, 'cantidad', qty+1)
+            qty += 1
+            print(qty)
+            total = float(product[4])*qty
+            print(total)
+            tree.set(item, 'importe', float(product[4])*float(qty))
+            text = tree.set(item, 'importe')
+    
+    #label.config(text=)
 
 def checkTreeView(given_code):
         code = ''

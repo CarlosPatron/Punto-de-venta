@@ -28,6 +28,7 @@ def open(tree):
             else:
                 qty = int(tree.set(item, 'cantidad'))
                 tree.set(item, 'cantidad', qty+1)
+                tree.set(item, 'importe', float(product[4])*int(qty+1))
 
             screen.quit()
             screen.destroy()

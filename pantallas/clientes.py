@@ -1,6 +1,7 @@
 import customtkinter as tk
-from tkinter import ttk
-from .abc.clientes import add, modify
+from tkinter import ttk, messagebox
+from .abc.clientes import add, modify, del_events, report_events
+from .abc.clientes.get_table import get_clients_data
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -10,8 +11,34 @@ def open():
     screen.geometry('1280x720')
     screen.title('Clientes')
 
-    def test():
-        print('Hello')
+    def press_add_button():
+        add.open()
+        fill_TreeView()
+
+    def press_del_button():
+        values = ['', 'id_cliente']
+        try:
+            values[0] = get_selected_item_column_value(0)
+
+            if msgBox()=='yes':
+                del_events.delete_product(values)
+                fill_TreeView()
+        except:
+            messagebox.showerror(title='Error', message='Se debe seleccionar un cliente')
+
+    def get_selected_item_column_value(column):
+        id_selected_item = tree.focus()
+        value = tree.item(id_selected_item)['values'][column]
+
+        return value
+    
+    def report():
+        report_events.generate_report()
+    
+    def msgBox():
+        msg = messagebox.askquestion(title='Eliminar producto', message='¿Seguro que deseas eliminar el producto seleccionado?', icon='warning')
+        
+        return msg
 
     frame = tk.CTkFrame(master=screen)
     frame.pack(padx=120, pady=40, fill='both', expand=True)
@@ -25,7 +52,7 @@ def open():
 
         # Define headings
         tree.column('id', anchor='center', stretch='no', width=200)
-        tree.heading('id', text='ID de empleado')
+        tree.heading('id', text='ID de cliente')
 
         tree.column('nombre', anchor='center', stretch='no', width=200)
         tree.heading('nombre', text='Nombre')
@@ -51,10 +78,10 @@ def open():
         style.configure('Treeview.Heading', font=(None, 14))
 
     def bottom_menu():
-        btn_add = tk.CTkButton(master=frame, text='Agregar cliente', font=('Bold', 20), command=add.open)
+        btn_add = tk.CTkButton(master=frame, text='Agregar cliente', font=('Bold', 20), command=press_add_button)
         btn_modify = tk.CTkButton(master=frame, text='Modificar cliente', font=('Bold', 20), command=add.open)
-        btn_delete = tk.CTkButton(master=frame, text='Eliminar cliente', font=('Bold', 20))
-        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20))
+        btn_delete = tk.CTkButton(master=frame, text='Eliminar cliente', font=('Bold', 20), command=press_del_button)
+        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=report)
 
         btn_add.pack(padx=10, pady=5, side='left', anchor='sw')
         btn_modify.pack(padx=10, pady=5, side='left', anchor='sw')
@@ -63,6 +90,21 @@ def open():
     
     create_treeview()
     bottom_menu()
+
+    def fill_TreeView():
+        clear_treeview()
+        data = get_clients_data()
+        print(data)
+
+        for x in range(len(data)):
+            tree.insert(parent='', index='end', iid=x, text='', values=(data[x][0], data[x][1], data[x][2], data[x][3], data[x][4], data[x][5], data[x][6]))
+
+    def clear_treeview():
+        for x in tree.get_children():
+            tree.delete(x)
+        screen.update()
+
+    fill_TreeView()
 
     screen.grab_set()
     screen.mainloop()
