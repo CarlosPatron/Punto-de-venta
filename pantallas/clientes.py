@@ -16,7 +16,7 @@ def open():
         fill_TreeView()
 
     def press_del_button():
-        values = ['', 'id_cliente']
+        values = ['', 'id']
         try:
             values[0] = get_selected_item_column_value(0)
 
@@ -26,6 +26,21 @@ def open():
         except:
             messagebox.showerror(title='Error', message='Se debe seleccionar un cliente')
 
+    def press_mofidy_button():
+        element =  get_row()
+
+        if len(element)==0:
+            messagebox.showerror(title='Error', message='Se debe seleccionar un cliente')
+        else:
+            modify.open(element=element)
+            fill_TreeView()
+
+    def get_row():
+        id_selected_item = tree.focus()
+        value = tree.item(id_selected_item)['values']
+
+        return value
+
     def get_selected_item_column_value(column):
         id_selected_item = tree.focus()
         value = tree.item(id_selected_item)['values'][column]
@@ -33,7 +48,8 @@ def open():
         return value
     
     def report():
-        report_events.generate_report()
+        report_name = report_events.generate_report()
+        messagebox.showinfo(title='Reporte generado', message=f'Reporte guardado.\nNombre: {report_name}')
     
     def msgBox():
         msg = messagebox.askquestion(title='Eliminar producto', message='¿Seguro que deseas eliminar el producto seleccionado?', icon='warning')
@@ -79,7 +95,7 @@ def open():
 
     def bottom_menu():
         btn_add = tk.CTkButton(master=frame, text='Agregar cliente', font=('Bold', 20), command=press_add_button)
-        btn_modify = tk.CTkButton(master=frame, text='Modificar cliente', font=('Bold', 20), command=add.open)
+        btn_modify = tk.CTkButton(master=frame, text='Modificar cliente', font=('Bold', 20), command=press_mofidy_button)
         btn_delete = tk.CTkButton(master=frame, text='Eliminar cliente', font=('Bold', 20), command=press_del_button)
         btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=report)
 
@@ -94,7 +110,6 @@ def open():
     def fill_TreeView():
         clear_treeview()
         data = get_clients_data()
-        print(data)
 
         for x in range(len(data)):
             tree.insert(parent='', index='end', iid=x, text='', values=(data[x][0], data[x][1], data[x][2], data[x][3], data[x][4], data[x][5], data[x][6]))

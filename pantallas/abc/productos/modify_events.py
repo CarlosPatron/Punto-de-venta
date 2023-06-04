@@ -20,6 +20,11 @@ def modify_product(old_entries, new_entries):
 
     if len(check)==0:
         db.updateElement('productos', product, 'Producto')
+    elif len(check)!=0:
+        if str(old_entries[0])==str(new_entries[0]):
+            db.updateElement('productos', product, 'Producto')
+        else:
+            return 1
     else:
         return 1
     

@@ -26,9 +26,15 @@ class Database:
         data = self.exeCmd(command, 'get')
 
         return data
+    
+    def getElementbyId(self, table, id):
+        command = f"SELECT * FROM {table} WHERE id = {str(id)};"
+        data = self.exeCmd(command, 'get')
+
+        return data
 
     def getTable(self, table):
-        command = f"SELECT * FROM {table} WHERE status = true;"
+        command = f"SELECT * FROM {table};"
         data = self.exeCmd(command, 'get')
 
         return data

@@ -1,27 +1,9 @@
-import time
-import keyboard
+import ast
 
-def wait_string(e):
-    global array_code
+strList = '[[1, 1], [2, 1]]'
 
-    if e.name=='enter':
-        code = get_code(array_code)
-        print(f'Código: {code}')
-        array_code = []
-    else:
-        if len(e.name)==1:
-            array_code.append(e.name)
+def convert(string):
+    string = ast.literal_eval(string)
+    print(string)
 
-def get_code(array):
-    code = ''.join(array)
-
-    return code
-
-keyboard.on_press(wait_string)
-array_code = []
-
-while True:
-    #if len(array_code)>0:
-    #    code = ''.join(array_code)
-    pass
-    time.sleep(0.1)
+convert(string=strList)

@@ -1,8 +1,7 @@
 import customtkinter as tk
 from tkinter import ttk, messagebox
-from .abc.empleados import add, modify
+from .abc.empleados import add, modify, del_events, report_events
 from .abc.db_ev import general_events as ge
-from .abc.empleados import del_events
 
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
@@ -34,7 +33,7 @@ def open():
         if len(element)==0:
             messagebox.showerror(title='Error', message='Se debe seleccionar un empleado')
         else:
-            modify.open(element)
+            modify.open(row=element)
             fill_treeView()
 
     def press_del_button():
@@ -48,6 +47,10 @@ def open():
                 fill_treeView()
         except:
             messagebox.showerror(title='Error', message='Se debe seleccionar un empleado')
+
+    def press_report():
+        report_name = report_events.generate_report()
+        messagebox.showinfo(title='Reporte generado', message=f'Nombre: {report_name}')
 
     def msgBox():
         msg = messagebox.askquestion(title='Eliminar empleado', message='¿Seguro que deseas eliminar a este empleado?', icon='warning')
@@ -107,7 +110,7 @@ def open():
         btn_add = tk.CTkButton(master=frame, text='Agregar usuario', font=('Bold', 20), command=press_add_button)
         btn_modify = tk.CTkButton(master=frame, text='Modificar usuario', font=('Bold', 20), command=press_modify_button)
         btn_delete = tk.CTkButton(master=frame, text='Eliminar usuario', font=('Bold', 20), command=press_del_button)
-        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20))
+        btn_report = tk.CTkButton(master=frame, text='Generar reporte', font=('Bold', 20), command=press_report)
 
         btn_add.pack(padx=10, pady=5, side='left', anchor='sw')
         btn_modify.pack(padx=10, pady=5, side='left', anchor='sw')

@@ -19,7 +19,6 @@ root.after(0, lambda:root.state('zoomed'))
 def press_user_button():
     login.open()
 
-# ! Es sólo una simulación
 def purchase():
     if len(tree.get_children())==0:
         messagebox.showerror(title='Error', message='Se debe agregar algún producto')
@@ -27,6 +26,7 @@ def purchase():
         register_purchase()
         messagebox.showinfo(title='Venta realizada', message='Venta realizada exitosamente')
         clear_treeView()
+    lbl_precio.configure(text='0')
 
 def update_total():
     importe = 0
@@ -84,6 +84,7 @@ def press_quit():
 
     if len(selected)>0:
         tree.delete(selected)
+        update_total()
     else:
         messagebox.showerror(title='Error', message='Se debe seleccionar un producto')
 
@@ -92,7 +93,7 @@ def cancel_sale():
     
     if option=='yes':
         clear_treeView()
-        lbl_precio.config(text='0')
+        lbl_precio.configure(text='0')
 
 def clear_treeView():
     for x in tree.get_children():
@@ -102,7 +103,7 @@ def create_top_menu():
     global btn_user
 
     # Menu elements
-    menu_items = ['btn_ventas','btn_inventario', 'btn_empleados', 'btn_clientes', 'btn_online']
+    menu_items = ['btn_ventas','btn_inventario', 'btn_empleados', 'btn_clientes']
 
     menuFrame = tk.CTkFrame(master=root)
     btn_ventas = tk.CTkButton(master=menuFrame, text='Historial de ventas', font=('Bold', 20), command=historial.open)
@@ -190,9 +191,8 @@ def wait_string(e, array_code):
         code = get_code(array_code)
         #print(f'Código: {code}')
         try:
-            add_product(code=code, label=lbl_precio)
+            add_product(code=code)
             update_total()
-
         except:
             pass
         array_code.clear()
@@ -211,7 +211,7 @@ def threadFunction(array_code):
     global stopThread
     array_code = list(array_code)
     keyboard.on_press(lambda event: wait_string(event, array_code))
-    while not stopThread:
+    while stopThread==False:
         #if len(array_code)>0:
         #    code = ''.join(array_code)
         pass
@@ -230,7 +230,7 @@ array_code = [""]
 thread = threading.Thread(target=threadFunction, args=(array_code))
 thread.start()
 
-def stop_thread(arg):
+def stop_thread():
     global stopThread
     global thread
 
@@ -238,7 +238,7 @@ def stop_thread(arg):
     thread.join()
     print('Hilo detenido')
 
-def start_thread(arg):
+def start_thread():
     global stopThread
     global thread
 
@@ -246,10 +246,7 @@ def start_thread(arg):
     thread.start()
     print('Hilo iniciado')
 
-#root.bind('<FocusIn>', start_thread)
-#root.bind('<FocusOut>', stop_thread)
-
-def add_product(code, label):
+def add_product(code):
     last_iid = 0
     product = coev.search_product(code)
     code, item = checkTreeView(code)
@@ -271,9 +268,6 @@ def add_product(code, label):
             total = float(product[4])*qty
             print(total)
             tree.set(item, 'importe', float(product[4])*float(qty))
-            text = tree.set(item, 'importe')
-    
-    #label.config(text=)
 
 def checkTreeView(given_code):
         code = ''
@@ -291,4 +285,5 @@ create_top_menu()
 create_treeview()
 create_bottom_menu()
 
+root.grab_set()
 root.mainloop()

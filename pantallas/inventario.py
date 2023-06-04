@@ -117,7 +117,7 @@ def open():
     
     def report():
         report_name = report_events.generate_report()
-        messagebox.showinfo(title='Reporte generado', message=f'Reporte guardado. Nombre: {report_name}')
+        messagebox.showinfo(title='Reporte generado', message=f'Reporte guardado.\nNombre: {report_name}')
 
     def bottom_menu():
         btn_add_inv = tk.CTkButton(master=frame, text='Agregar existencias', font=('Bold', 20), command=press_add_inv_button)

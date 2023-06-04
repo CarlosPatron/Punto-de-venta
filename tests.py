@@ -193,6 +193,7 @@ def threadFunction(array_code):
 
 array_code = [""]
 thread = threading.Thread(target=threadFunction, args=(array_code))
+thread.start()
 
 # Other config
 root.grid_columnconfigure(0, weight=1)

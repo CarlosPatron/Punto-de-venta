@@ -17,7 +17,7 @@ def export_to_pdf(data, opt):
     w, h = A4
     max_rows_per_page = 45
     x_offset = 50
-    y_offset = 50
+    y_offset = 100
     padding = 15
 
     if opt=='Productos':
@@ -25,15 +25,13 @@ def export_to_pdf(data, opt):
     elif opt=='Clientes':
         xlist = [x + x_offset for x in [0, 30, 130, 210, 280, 350, 455, 500]]
     elif opt=='Empleados':
-        xlist = [x + x_offset for x in [0, 30, 130, 210, 280, 350, 455, 500]]
+        xlist = [x + x_offset for x in [0, 100, 160, 240, 310, 370, 450, 500]]
     elif opt=='Ventas':
-        xlist = [x + x_offset for x in [0, 30, 130, 210, 280, 350, 455, 500]]
+        xlist = [x + x_offset for x in [0, 100, 180, 300, 350]]
     ylist = [h - y_offset - i*padding for i in range(max_rows_per_page + 1)]
 
-    #PAGE_HEIGHT = canvas._pagesize[1]
-    #canvas.drawString(50, 50, opt)
-    #img = 'guitar.jpg'
-    #c.drawImage(img, 10, 10, mask='auto')
+    c.drawString(250, h-50, f'Reporte de {opt}')
+    c.line(50, h-70, 550, h-70)
 
     for rows in grouper(data, max_rows_per_page):
         rows = tuple(filter(bool, rows))

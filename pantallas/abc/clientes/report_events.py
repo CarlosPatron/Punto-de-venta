@@ -1,5 +1,4 @@
-from ..db_ev import database
-from ..db_ev import reports
+from ..db_ev import database, reports
 
 def generate_report():
     data = [('ID', 'Nombre', 'Ap. Paterno', 'Ap. Materno', 'Teléfono', 'Email', 'Estado')]
@@ -12,4 +11,6 @@ def generate_report():
         data.append(row)
 
     #print(data)
-    reports.export_to_pdf(data=data, opt='Clientes')
+    name = reports.export_to_pdf(data=data, opt='Clientes')
+
+    return name

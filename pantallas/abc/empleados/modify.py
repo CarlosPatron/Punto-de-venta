@@ -3,7 +3,7 @@ import customtkinter as tk
 tk.set_appearance_mode('dark')
 tk.set_default_color_theme('blue')
 
-def open():
+def open(row):
     screen = tk.CTkToplevel()
     screen.geometry('600x450')
     screen.title('Modificar usuario')
@@ -16,6 +16,13 @@ def open():
     tk.CTkLabel(master=frame, text='Modificar usuario', font=('Roboto', 24)).pack(padx=10, pady=12)
 
     def create_elements():
+        global entry_id
+        global entry_nombre
+        global entry_ap_p
+        global entry_ap_m
+        global entry_phone
+        global entry_rol
+
         # Create elements
         entry_id = tk.CTkEntry(master=frame, placeholder_text='Número de empleado')
         entry_nombre = tk.CTkEntry(master=frame, placeholder_text='Nombre')
@@ -34,7 +41,14 @@ def open():
         entry_rol.pack(padx=10, pady=5)
         btn_accept.pack(padx=10, pady=20)
     
+    def setData():
+        entries = [entry_id, entry_nombre, entry_ap_p, entry_ap_m, entry_phone]
+
+        for x in range(len(entries)):
+            entries[x].insert(0, str(row[x]))
+    
     create_elements()
+    setData()
 
     screen.grab_set()
     screen.mainloop()
